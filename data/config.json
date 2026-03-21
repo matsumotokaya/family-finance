@@ -1,0 +1,8 @@
+{
+  "familyName": "松本家",
+  "monthlyTargetSavings": 100000,
+  "standardMonthlyIncome": 500000,
+  "mortgageEndYear": 2028,
+  "mortgageEndMonth": 12,
+  "incompleteMonths": ["2026-02", "2026-03"]
+}
