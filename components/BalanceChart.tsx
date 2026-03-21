@@ -110,27 +110,19 @@ export default function BalanceChart({ transactions }: { transactions: Transacti
       </ResponsiveContainer>
 
       {/* Current balance summary */}
-      <div className="mt-4 pt-3 border-t border-slate-100">
-        {/* MUFG + りそな 横並び */}
-        <div className="grid grid-cols-2 gap-3 mb-3">
-          {[
-            { label: '三菱UFJ', value: data[data.length - 1].mufg!, color: '#3b82f6' },
-            { label: 'りそな',  value: data[data.length - 1].resona!, color: '#22c55e' },
-          ].map(item => (
-            <div key={item.label} className="text-center">
-              <p className="text-xs text-slate-400 mb-0.5">{item.label}</p>
-              <p className="text-xl font-black" style={{ color: item.color }}>
-                {fmtFull(item.value)}
-              </p>
-            </div>
-          ))}
-        </div>
-        {/* 合計 — 全幅・大きめ */}
-        <div className="text-center border-t border-slate-100 pt-3">
-          <p className="text-xs text-slate-400 mb-0.5">合計</p>
-          <p className="text-3xl font-black text-slate-900">
-            {fmtFull(data[data.length - 1].total!)}
-          </p>
+      <div className="mt-4 border-t border-slate-100">
+        {[
+          { label: '三菱UFJ', value: data[data.length - 1].mufg!, color: '#3b82f6' },
+          { label: 'りそな',  value: data[data.length - 1].resona!, color: '#22c55e' },
+        ].map(item => (
+          <div key={item.label} className="flex items-center justify-between px-0 py-3 border-b border-slate-50">
+            <span className="text-sm font-bold text-slate-700">{item.label}</span>
+            <span className="text-sm font-bold" style={{ color: item.color }}>{fmtFull(item.value)}</span>
+          </div>
+        ))}
+        <div className="flex items-center justify-between py-3 bg-slate-50 -mx-4 px-4 mt-0">
+          <span className="text-sm font-bold text-slate-600">合計</span>
+          <span className="text-2xl font-black text-slate-900">{fmtFull(data[data.length - 1].total!)}</span>
         </div>
       </div>
     </div>

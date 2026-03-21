@@ -7,7 +7,7 @@ import {
 import HeroStats from './HeroStats';
 import BalanceChart from './BalanceChart';
 import CardAlertBanner from './CardAlertBanner';
-import CardTrendChart from './CardTrendChart';
+import CardBillingSummary from './CardBillingSummary';
 import CardDetailTabs from './CardDetailTabs';
 import HamburgerMenu from './HamburgerMenu';
 import { CardStatement } from '@/lib/cardUtils';
@@ -93,8 +93,11 @@ export default function Dashboard({ transactions, config, cardStatements }: Prop
         {/* Balance over time */}
         <BalanceChart transactions={transactions} />
 
-        {/* Card billing trend */}
-        <CardTrendChart statements={cardStatements} />
+        {/* Card billing summary for selected month */}
+        <CardBillingSummary
+          statements={cardStatements}
+          yyyymm={`${year}${String(month).padStart(2, '0')}`}
+        />
 
         {/* Card transaction details */}
         <CardDetailTabs
@@ -103,7 +106,10 @@ export default function Dashboard({ transactions, config, cardStatements }: Prop
         />
 
         {/* ViewCard 未来 alert */}
-        <CardAlertBanner statements={cardStatements} />
+        <CardAlertBanner
+          statements={cardStatements}
+          yyyymm={`${year}${String(month).padStart(2, '0')}`}
+        />
 
         <p className="text-center text-xs text-slate-400 pb-2">
           データは毎月更新されます

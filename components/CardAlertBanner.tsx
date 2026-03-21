@@ -2,9 +2,9 @@
 import Link from 'next/link';
 import { CardStatement, buildMonthlySummaries, VIEW_CARD_MIKU_LIMIT } from '@/lib/cardUtils';
 
-export default function CardAlertBanner({ statements }: { statements: CardStatement[] }) {
+export default function CardAlertBanner({ statements, yyyymm }: { statements: CardStatement[]; yyyymm: string }) {
   const summaries = buildMonthlySummaries(statements);
-  const latest = summaries[summaries.length - 1];
+  const latest = summaries.find(s => s.yyyymm === yyyymm) ?? summaries[summaries.length - 1];
   if (!latest) return null;
 
   const isOver = latest.viewMiku > VIEW_CARD_MIKU_LIMIT;

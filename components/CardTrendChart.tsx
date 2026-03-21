@@ -50,8 +50,6 @@ export default function CardTrendChart({ statements }: { statements: CardStateme
 
   if (data.length === 0) return null;
 
-  const latest = data[data.length - 1];
-
   return (
     <div className="bg-white rounded-2xl p-4 pb-6 shadow-sm">
       <h2 className="text-sm font-bold text-slate-700 mb-0.5">カード請求額の推移</h2>
@@ -99,24 +97,6 @@ export default function CardTrendChart({ statements }: { statements: CardStateme
           />
         </LineChart>
       </ResponsiveContainer>
-
-      {/* Latest month summary */}
-      <div className="mt-4 pt-3 border-t border-slate-100">
-        <div className="grid grid-cols-2 gap-3 mb-3">
-          <div className="text-center">
-            <p className="text-xs text-slate-400 mb-0.5">VIEWカード（直近）</p>
-            <p className="text-xl font-black text-orange-500">{fmtFull(latest.view)}</p>
-          </div>
-          <div className="text-center">
-            <p className="text-xs text-slate-400 mb-0.5">ルミネカード（直近）</p>
-            <p className="text-xl font-black text-slate-600">{fmtFull(latest.lumine)}</p>
-          </div>
-        </div>
-        <div className="text-center border-t border-slate-100 pt-3">
-          <p className="text-xs text-slate-400 mb-0.5">合計</p>
-          <p className="text-3xl font-black text-slate-900">{fmtFull(latest.view + latest.lumine)}</p>
-        </div>
-      </div>
     </div>
   );
 }
