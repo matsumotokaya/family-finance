@@ -10,6 +10,8 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
   ResponsiveContainer, ReferenceLine, Cell,
 } from 'recharts';
+import HamburgerMenu from './HamburgerMenu';
+import PageHeader from './PageHeader';
 
 function fmt(n: number) { return `¥${n.toLocaleString('ja-JP')}`; }
 function fmtK(n: number) { return n >= 10000 ? `${Math.round(n / 1000)}k` : `${n}`; }
@@ -44,15 +46,15 @@ export default function CardDashboard({ statements }: Props) {
   return (
     <div className="min-h-screen bg-slate-100">
       {/* Header */}
-      <header className="bg-slate-900 text-white px-4 pt-5 pb-4 shadow-lg">
-        <div className="max-w-xl mx-auto">
-          <div className="flex items-center gap-2 mb-1">
-            <Link href="/" className="text-white/60 text-sm">← ダッシュボード</Link>
+      <PageHeader>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-lg font-black">カード明細分析</h1>
+            <p className="text-xs text-white/60 mt-0.5">VIEWカード（未来）・ルミネカード（夏弥）</p>
           </div>
-          <h1 className="text-xl font-black">カード明細分析</h1>
-          <p className="text-xs text-white/60 mt-0.5">VIEWカード（未来）・ルミネカード（夏弥）</p>
+          <HamburgerMenu />
         </div>
-      </header>
+      </PageHeader>
 
       <main className="max-w-xl mx-auto px-4 py-4 space-y-3 pb-12">
 

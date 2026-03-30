@@ -4,9 +4,11 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 const NAV_ITEMS = [
-  { href: '/',      label: 'ホーム',      icon: '🏠' },
-  { href: '/cards', label: 'カード明細', icon: '💳' },
-  { href: '/info',  label: 'その他',      icon: '⚙️' },
+  { href: '/',         label: 'ホーム',      icon: '🏠' },
+  { href: '/cards',    label: 'カード明細',  icon: '💳' },
+  { href: '/mirai',    label: '松本未来',    icon: '👤' },
+  { href: '/natsuya',  label: '松本夏弥',    icon: '👤' },
+  { href: '/info',     label: 'その他',      icon: '⚙️' },
 ];
 
 export default function HamburgerMenu() {

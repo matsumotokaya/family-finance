@@ -6,6 +6,7 @@ import {
 } from '@/lib/dataUtils';
 import SavingsGoal from './SavingsGoal';
 import HamburgerMenu from './HamburgerMenu';
+import PageHeader from './PageHeader';
 
 const MONTHLY_HOUSING_LOAN = 115410;
 
@@ -30,16 +31,14 @@ export default function InfoPage({ config, transactions }: Props) {
   return (
     <div className="min-h-screen bg-slate-100">
       {/* Header */}
-      <header className="bg-slate-900 text-white px-4 pt-5 pb-4 shadow-lg">
-        <div className="max-w-xl mx-auto">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="text-white/60 text-sm">← ホーム</Link>
-            <h1 className="text-sm font-medium opacity-70">松本家の家計簿</h1>
-            <HamburgerMenu />
-          </div>
-          <p className="text-xl font-black mt-3">その他・設定情報</p>
+      <PageHeader>
+        <div className="flex items-center justify-between">
+          <div className="w-9" />
+          <h1 className="text-sm font-medium opacity-70">松本家の家計簿</h1>
+          <HamburgerMenu />
         </div>
-      </header>
+        <p className="text-xl font-black mt-2 pb-1">その他・設定情報</p>
+      </PageHeader>
 
       <main className="max-w-xl mx-auto px-4 py-4 space-y-4 pb-12">
 
