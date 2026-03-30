@@ -7,7 +7,7 @@ import CardTrendChart from './CardTrendChart';
 
 export default function CardBillsHistory({ statements }: { statements: CardStatement[] }) {
   const months = useMemo(() => {
-    const yyyymms = [...new Set(statements.map(s => s.payment_yyyymm))]
+    const yyyymms = Array.from(new Set(statements.map(s => s.payment_yyyymm)))
       .filter(m => m >= '202512')
       .sort((a, b) => b.localeCompare(a)); // 降順
     return yyyymms.map(m => calcMonthBilling(statements, m));
