@@ -4,7 +4,7 @@ import Link from 'next/link';
 import HamburgerMenu from './HamburgerMenu';
 import PageHeader from './PageHeader';
 import { PendingSnapshot, PendingTransaction } from '@/lib/pendingCardUtils';
-import { getMonthLabel } from '@/lib/cardUtils';
+import { getMonthLabel, VIEW_CARD_MIKU_LIMIT } from '@/lib/cardUtils';
 import { supabase } from '@/lib/supabase';
 import { BubbleIcon, CommentInput, CommentList } from './CommentUI';
 
@@ -123,6 +123,8 @@ export default function PendingDashboard({ snapshot, selectedMonth, availableMon
     .reduce((sum, item) => sum + item.amount, 0);
   const excludedCount = items.filter(item => excludedIds.has(item.id)).length;
   const cardSummaries = summarizeByCard(activeItems.map(item => item.raw));
+  const nextMonthBudget = VIEW_CARD_MIKU_LIMIT - totalAmount;
+  const isNextMonthBudgetNegative = nextMonthBudget < 0;
 
   const toggleExclude = async (id: string) => {
     const excluded = excludedIds.has(id);
@@ -235,6 +237,28 @@ export default function PendingDashboard({ snapshot, selectedMonth, availableMon
                 </div>
               </div>
             ))}
+          </div>
+        </section>
+
+        <section className={`rounded-2xl border p-4 shadow-sm ${isNextMonthBudgetNegative ? 'border-red-200 bg-red-50' : 'border-emerald-200 bg-emerald-50'}`}>
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <h2 className="text-sm font-bold text-slate-900">来月の予算</h2>
+              <p className="mt-1 text-xs text-slate-600">
+                基準予算 ¥{VIEW_CARD_MIKU_LIMIT.toLocaleString()} から、今回の対象額を差し引いています。
+              </p>
+            </div>
+            <p className={`text-2xl font-bold tabular-nums ${isNextMonthBudgetNegative ? 'text-red-600' : 'text-emerald-700'}`}>
+              ¥{nextMonthBudget.toLocaleString()}
+            </p>
+          </div>
+          <div className="mt-3 rounded-xl bg-white/80 px-3 py-3">
+            <p className="text-sm font-semibold tabular-nums text-slate-800">
+              ¥{VIEW_CARD_MIKU_LIMIT.toLocaleString()} - ¥{totalAmount.toLocaleString()} = ¥{nextMonthBudget.toLocaleString()}
+            </p>
+            <p className="mt-1 text-xs text-slate-500">
+              除外した明細は差し引きに含めていません。
+            </p>
           </div>
         </section>
 
