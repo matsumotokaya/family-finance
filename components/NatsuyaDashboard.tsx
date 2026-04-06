@@ -5,6 +5,7 @@ import { CardStatement, CardTransaction } from '@/lib/cardUtils';
 import HamburgerMenu from './HamburgerMenu';
 import PageHeader from './PageHeader';
 import { supabase } from '@/lib/supabase';
+import { BubbleIcon, CommentInput, CommentList } from './CommentUI';
 
 const INCOME = 250000;
 const PERSON = 'natsuya';
@@ -385,16 +386,7 @@ function ItemSection({ title, activeTotal, items, excludedIds, onToggle, comment
                       </button>
                     </div>
 
-                    {hasComments && (
-                      <ul className="mt-1.5 space-y-0.5 pl-1">
-                        {itemComments.map(c => (
-                          <li key={c.id} className="flex items-start gap-1">
-                            <span className="text-slate-300 text-[10px] mt-0.5 shrink-0">›</span>
-                            <p className="text-xs text-slate-500 leading-relaxed break-words">{c.content}</p>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
+                    <CommentList comments={itemComments} />
 
                     {isCommentOpen && (
                       <CommentInput
@@ -410,41 +402,5 @@ function ItemSection({ title, activeTotal, items, excludedIds, onToggle, comment
         </div>
       )}
     </div>
-  );
-}
-
-// ─── コメント入力フォーム ─────────────────────────────────────
-function CommentInput({ onSubmit, onCancel }: { onSubmit: (text: string) => void; onCancel: () => void }) {
-  const [text, setText] = useState('');
-  return (
-    <div className="mt-2 flex gap-1.5 items-center">
-      <input
-        autoFocus
-        value={text}
-        onChange={e => setText(e.target.value)}
-        onKeyDown={e => { if (e.key === 'Escape') onCancel(); }}
-        placeholder="メモを追加..."
-        className="flex-1 text-xs bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1.5 outline-none focus:border-blue-300"
-      />
-      <button
-        onClick={() => { if (text.trim()) onSubmit(text); }}
-        disabled={!text.trim()}
-        className="shrink-0 text-xs px-2.5 py-1.5 bg-slate-800 text-white rounded-lg disabled:opacity-30 font-semibold"
-      >
-        追加
-      </button>
-      <button onClick={onCancel} className="shrink-0 text-slate-400 text-xs px-1 py-1.5 hover:text-slate-600">
-        ✕
-      </button>
-    </div>
-  );
-}
-
-// ─── 吹き出しアイコン ─────────────────────────────────────────
-function BubbleIcon({ filled }: { filled: boolean }) {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill={filled ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-    </svg>
   );
 }

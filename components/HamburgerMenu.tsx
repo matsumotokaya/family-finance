@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 const NAV_ITEMS = [
   { href: '/',         label: 'ホーム',      icon: '🏠' },
   { href: '/cards',    label: 'カード明細',  icon: '💳' },
+  { href: '/pending',  label: '未確定決済',  icon: '🕒' },
   { href: '/mirai',    label: '松本未来',    icon: '👤' },
   { href: '/natsuya',  label: '松本夏弥',    icon: '👤' },
   { href: '/info',     label: 'その他',      icon: '⚙️' },
