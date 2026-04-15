@@ -61,6 +61,7 @@ export default function PendingDashboard({ snapshot, selectedMonth, availableMon
   const [excludedIds, setExcludedIds] = useState<Set<string>>(new Set());
   const [comments, setComments] = useState<Record<string, DBComment[]>>({});
   const [openCommentId, setOpenCommentId] = useState<string | null>(null);
+  const [noCommentWarningId, setNoCommentWarningId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -143,6 +144,13 @@ export default function PendingDashboard({ snapshot, selectedMonth, availableMon
       return;
     }
 
+    if (!comments[id] || comments[id].length === 0) {
+      setNoCommentWarningId(id);
+      setOpenCommentId(id);
+      return;
+    }
+
+    setNoCommentWarningId(null);
     await supabase
       .from('familybudget_exclusions')
       .insert({ person: PERSON, month: selectedMonth, item_id: id });
@@ -166,6 +174,9 @@ export default function PendingDashboard({ snapshot, selectedMonth, availableMon
         ...prev,
         [id]: [...(prev[id] ?? []), data as DBComment],
       }));
+      if (noCommentWarningId === id) {
+        setNoCommentWarningId(null);
+      }
     }
     setOpenCommentId(null);
   };
@@ -281,8 +292,15 @@ export default function PendingDashboard({ snapshot, selectedMonth, availableMon
                 const isCommentOpen = openCommentId === item.id;
                 const hasComments = itemComments.length > 0;
 
+                const showNoCommentWarning = noCommentWarningId === item.id;
+
                 return (
                   <li key={item.id} className={`px-4 py-3 transition-opacity ${excluded ? 'opacity-40' : ''}`}>
+                    {showNoCommentWarning && (
+                      <p className="mb-2 rounded-lg bg-amber-50 px-3 py-2 text-xs font-semibold text-amber-700">
+                        除外するにはコメント欄に理由を記入してください
+                      </p>
+                    )}
                     <div className="flex items-start gap-2">
                       <div className="min-w-0 flex-1">
                         <div className="flex items-center gap-2">

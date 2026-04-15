@@ -46,6 +46,8 @@ export function parsePendingCardText(fileName: string, rawText: string): Pending
 
   const transactions: PendingTransaction[] = [];
   let currentYear = '';
+  // ファイル名・行番号に依存しないID生成のため、同一キーの出現回数を追跡する
+  const occurrenceCount: Record<string, number> = {};
 
   for (let index = 0; index < lines.length; index += 1) {
     const line = lines[index];
@@ -73,8 +75,14 @@ export function parsePendingCardText(fileName: string, rawText: string): Pending
     const cardLast4Match = maskedCardNumber.match(/(\d{4})$/);
     const cardLast4 = cardLast4Match?.[1] ?? '----';
 
+    // IDは取引内容のみで生成（ファイル名・行番号を含まない）
+    // 同日・同カード・同店舗・同金額が複数ある場合は出現順で区別する
+    const baseKey = `${currentYear}-${month}-${day}-${cardLast4}-${merchant}-${amount}`;
+    const occurrence = occurrenceCount[baseKey] ?? 0;
+    occurrenceCount[baseKey] = occurrence + 1;
+
     transactions.push({
-      id: `${fileName}-${currentYear}-${month}-${day}-${cardLast4}-${index}`,
+      id: `${baseKey}-${occurrence}`,
       date: `${currentYear}-${month}-${day}`,
       maskedCardNumber,
       cardLast4,
