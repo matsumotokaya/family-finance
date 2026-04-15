@@ -120,13 +120,16 @@ family-budget/credit-card/
 対象月: YYYY年MM月
 ```
 
-### ステップ4：デプロイ
+### ステップ4：GitHubにpushして自動デプロイ
 
-Claudeがデータを更新したら、以下をターミナルで実行：
+Claudeがデータを更新したら、変更を GitHub に push してください。
+このリポジトリは **GitHub push をきっかけに Vercel が自動デプロイする運用** です。
 
 ```bash
-vercel --prod
+git push origin main
 ```
+
+`vercel --prod` は通常不要です。Vercel CLI を使うのは、GitHub 連携ではなく手動デプロイを明示的に行いたい場合だけです。
 
 ---
 
@@ -153,11 +156,23 @@ npm run dev
 
 ## Vercelへのデプロイ
 
+通常の本番反映は `main` ブランチへの push で行います。
+
 ```bash
-vercel --prod
+git push origin main
 ```
 
-初回のみ `vercel login` が必要です。デプロイ後はURLを家族に共有するだけでスマホから閲覧できます。
+Vercel が GitHub 連携経由で自動デプロイします。デプロイ後はURLを家族に共有するだけでスマホから閲覧できます。
+
+### 手動デプロイが必要な場合だけ
+
+GitHub 連携ではなく Vercel CLI で手動デプロイする場合は、以下を使います。
+
+```bash
+npx vercel --prod
+```
+
+この場合は事前に `npx vercel login` でログインが必要です。
 
 ---
 
