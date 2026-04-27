@@ -1,6 +1,1106 @@
 {
   "statements": [
     {
+      "file": "ご利用明細_202605 (1).csv",
+      "card": "lumine",
+      "card_label": "ルミネカード（夏弥）",
+      "payment_date": "2026年05月07日",
+      "payment_yyyymm": "202605",
+      "total": 203370,
+      "transactions": [
+        {
+          "date": "2026/03/07",
+          "shop": "ＣＵＲＳＯＲ，　ＡＩ　ＰＯＷＥＲＥＤ　ＩＤＥ",
+          "amount": 3281,
+          "refund": 0,
+          "this_charge": 3281,
+          "net": 3281,
+          "pay_type": "１回払",
+          "person": "松本　夏弥"
+        },
+        {
+          "date": "2026/03/07",
+          "shop": "ダイソ−",
+          "amount": 550,
+          "refund": 0,
+          "this_charge": 550,
+          "net": 550,
+          "pay_type": "１回払",
+          "person": "松本　夏弥"
+        },
+        {
+          "date": "2026/03/07",
+          "shop": "サイゼリヤ",
+          "amount": 1700,
+          "refund": 0,
+          "this_charge": 1700,
+          "net": 1700,
+          "pay_type": "１回払",
+          "person": "松本　夏弥"
+        },
+        {
+          "date": "2026/03/07",
+          "shop": "オ−ケ−　ニシテラオテン",
+          "amount": 12931,
+          "refund": 0,
+          "this_charge": 12931,
+          "net": 12931,
+          "pay_type": "１回払",
+          "person": "松本　夏弥"
+        },
+        {
+          "date": "2026/03/08",
+          "shop": "ヨ−クマ−ト　シヨクヒン",
+          "amount": 1183,
+          "refund": 0,
+          "this_charge": 1183,
+          "net": 1183,
+          "pay_type": "１回払",
+          "person": "松本　夏弥"
+        },
+        {
+          "date": "2026/03/09",
+          "shop": "ソフトバンク（Ｂ）",
+          "amount": 6160,
+          "refund": 0,
+          "this_charge": 6160,
+          "net": 6160,
+          "pay_type": "１回払",
+          "person": "松本　夏弥"
+        },
+        {
+          "date": "2026/03/09",
+          "shop": "ＣＵＲＳＯＲ　ＵＳＡＧＥ　ＭＩＤ　　ＭＡＲ",
+          "amount": 3284,
+          "refund": 0,
+          "this_charge": 3284,
+          "net": 3284,
+          "pay_type": "１回払",
+          "person": "松本　夏弥"
+        },
+        {
+          "date": "2026/03/09",
+          "shop": "ロ−ソン",
+          "amount": 930,
+          "refund": 0,
+          "this_charge": 930,
+          "net": 930,
+          "pay_type": "１回払",
+          "person": "松本　夏弥"
+        },
+        {
+          "date": "2026/03/12",
+          "shop": "クリエイト　エス　デイ−",
+          "amount": 928,
+          "refund": 0,
+          "this_charge": 928,
+          "net": 928,
+          "pay_type": "１回払",
+          "person": "松本　夏弥"
+        },
+        {
+          "date": "2026/03/12",
+          "shop": "トウキヨウガス・１８２８−０６８−１０７５",
+          "amount": 27273,
+          "refund": 0,
+          "this_charge": 27273,
+          "net": 27273,
+          "pay_type": "１回払",
+          "person": "松本　夏弥"
+        },
+        {
+          "date": "2026/03/14",
+          "shop": "ＯＰＥＮＡＩ　＊ＣＨＡＴＧＰＴ　ＳＵＢＳＣＲ",
+          "amount": 3650,
+          "refund": 0,
+          "this_charge": 3650,
+          "net": 3650,
+          "pay_type": "１回払",
+          "person": "松本　夏弥"
+        },
+        {
+          "date": "2026/03/14",
+          "shop": "オ−ケ−　ニシテラオテン",
+          "amount": 14819,
+          "refund": 0,
+          "this_charge": 14819,
+          "net": 14819,
+          "pay_type": "１回払",
+          "person": "松本　夏弥"
+        },
+        {
+          "date": "2026/03/14",
+          "shop": "マクドナルドモバイルオ−ダ−",
+          "amount": 2510,
+          "refund": 0,
+          "this_charge": 2510,
+          "net": 2510,
+          "pay_type": "１回払",
+          "person": "松本　夏弥"
+        },
+        {
+          "date": "2026/03/15",
+          "shop": "ＷＡＴＣＨＭＥ",
+          "amount": 1327,
+          "refund": 0,
+          "this_charge": 1327,
+          "net": 1327,
+          "pay_type": "１回払",
+          "person": "松本　夏弥"
+        },
+        {
+          "date": "2026/03/15",
+          "shop": "トレツサヨコハマ",
+          "amount": 610,
+          "refund": 0,
+          "this_charge": 610,
+          "net": 610,
+          "pay_type": "１回払",
+          "person": "松本　夏弥"
+        },
+        {
+          "date": "2026/03/15",
+          "shop": "トレツサヨコハマ",
+          "amount": 10330,
+          "refund": 0,
+          "this_charge": 10330,
+          "net": 10330,
+          "pay_type": "１回払",
+          "person": "松本　夏弥"
+        },
+        {
+          "date": "2026/03/18",
+          "shop": "オ−ケ−　ミヨウレンジテン",
+          "amount": 2114,
+          "refund": 0,
+          "this_charge": 2114,
+          "net": 2114,
+          "pay_type": "１回払",
+          "person": "松本　夏弥"
+        },
+        {
+          "date": "2026/03/19",
+          "shop": "イエロ−カンパニ−エビスホンテン",
+          "amount": 1780,
+          "refund": 0,
+          "this_charge": 1780,
+          "net": 1780,
+          "pay_type": "１回払",
+          "person": "松本　夏弥"
+        },
+        {
+          "date": "2026/03/20",
+          "shop": "クリエイト　エス　デイ−",
+          "amount": 1842,
+          "refund": 0,
+          "this_charge": 1842,
+          "net": 1842,
+          "pay_type": "１回払",
+          "person": "松本　夏弥"
+        },
+        {
+          "date": "2026/03/21",
+          "shop": "ホ−ムセンタ−コ−ナン　ツルミモトミヤテン",
+          "amount": 3608,
+          "refund": 0,
+          "this_charge": 3608,
+          "net": 3608,
+          "pay_type": "１回払",
+          "person": "松本　夏弥"
+        },
+        {
+          "date": "2026/03/21",
+          "shop": "クリエイト　エス　デイ−",
+          "amount": 1298,
+          "refund": 0,
+          "this_charge": 1298,
+          "net": 1298,
+          "pay_type": "１回払",
+          "person": "松本　夏弥"
+        },
+        {
+          "date": "2026/03/21",
+          "shop": "ベルクフオルテモリナガバシテン",
+          "amount": 3182,
+          "refund": 0,
+          "this_charge": 3182,
+          "net": 3182,
+          "pay_type": "１回払",
+          "person": "松本　夏弥"
+        },
+        {
+          "date": "2026/03/22",
+          "shop": "ヨ−クマ−ト　シヨクヒン",
+          "amount": 7745,
+          "refund": 0,
+          "this_charge": 7745,
+          "net": 7745,
+          "pay_type": "１回払",
+          "person": "松本　夏弥"
+        },
+        {
+          "date": "2026/03/25",
+          "shop": "東京地下鉄　恵比寿駅　オートチャージ",
+          "amount": 10000,
+          "refund": 0,
+          "this_charge": 10000,
+          "net": 10000,
+          "pay_type": "１回払",
+          "person": "松本　夏弥"
+        },
+        {
+          "date": "2026/03/25",
+          "shop": "マイバスケツト",
+          "amount": 612,
+          "refund": 0,
+          "this_charge": 612,
+          "net": 612,
+          "pay_type": "１回払",
+          "person": "松本　夏弥"
+        },
+        {
+          "date": "2026/03/25",
+          "shop": "マイバスケツト",
+          "amount": 1052,
+          "refund": 0,
+          "this_charge": 1052,
+          "net": 1052,
+          "pay_type": "１回払",
+          "person": "松本　夏弥"
+        },
+        {
+          "date": "2026/03/25",
+          "shop": "オ−ケ−　ミヨウレンジテン",
+          "amount": 1953,
+          "refund": 0,
+          "this_charge": 1953,
+          "net": 1953,
+          "pay_type": "１回払",
+          "person": "松本　夏弥"
+        },
+        {
+          "date": "2026/03/25",
+          "shop": "ネツトフリツクスドツトコム",
+          "amount": 1190,
+          "refund": 0,
+          "this_charge": 1190,
+          "net": 1190,
+          "pay_type": "１回払",
+          "person": "松本　夏弥"
+        },
+        {
+          "date": "2026/03/28",
+          "shop": "ヨ−クマ−ト　シヨクヒン",
+          "amount": 7333,
+          "refund": 0,
+          "this_charge": 7333,
+          "net": 7333,
+          "pay_type": "１回払",
+          "person": "松本　夏弥"
+        },
+        {
+          "date": "2026/03/28",
+          "shop": "オ−ケ−　ミヨウレンジテン",
+          "amount": 1632,
+          "refund": 0,
+          "this_charge": 1632,
+          "net": 1632,
+          "pay_type": "１回払",
+          "person": "松本　夏弥"
+        },
+        {
+          "date": "2026/03/29",
+          "shop": "ロリポツプ",
+          "amount": 605,
+          "refund": 0,
+          "this_charge": 605,
+          "net": 605,
+          "pay_type": "１回払",
+          "person": "松本　夏弥"
+        },
+        {
+          "date": "2026/03/29",
+          "shop": "ＫＹＡＳＨ",
+          "amount": 40000,
+          "refund": 0,
+          "this_charge": 40000,
+          "net": 40000,
+          "pay_type": "１回払",
+          "person": "松本　夏弥"
+        },
+        {
+          "date": "2026/03/30",
+          "shop": "ＯＰＥＮＡＩ",
+          "amount": 926,
+          "refund": 0,
+          "this_charge": 926,
+          "net": 926,
+          "pay_type": "１回払",
+          "person": "松本　夏弥"
+        },
+        {
+          "date": "2026/04/01",
+          "shop": "ＧＯＯＧＬＥ＊ＣＬＯＵＤ　２ＷＨＺ２３",
+          "amount": 74,
+          "refund": 0,
+          "this_charge": 74,
+          "net": 74,
+          "pay_type": "１回払",
+          "person": "松本　夏弥"
+        },
+        {
+          "date": "2026/04/02",
+          "shop": "ＡＭＡＺＯＮ　ＷＥＢ　ＳＥＲＶＩＣＥＳ　ＪＡＰ",
+          "amount": 429,
+          "refund": 0,
+          "this_charge": 429,
+          "net": 429,
+          "pay_type": "１回払",
+          "person": "松本　夏弥"
+        },
+        {
+          "date": "2026/04/02",
+          "shop": "ＯＰＥＮＲＯＵＴＥＲ，　ＩＮＣ",
+          "amount": 1784,
+          "refund": 0,
+          "this_charge": 1784,
+          "net": 1784,
+          "pay_type": "１回払",
+          "person": "松本　夏弥"
+        },
+        {
+          "date": "2026/04/04",
+          "shop": "ＡＮＴＨＲＯＰＩＣ",
+          "amount": 1825,
+          "refund": 0,
+          "this_charge": 1825,
+          "net": 1825,
+          "pay_type": "１回払",
+          "person": "松本　夏弥"
+        },
+        {
+          "date": "2026/04/04",
+          "shop": "ＣＬＡＵＤＥ．ＡＩ　ＳＵＢＳＣＲＩＰＴＩＯＮ",
+          "amount": 3649,
+          "refund": 0,
+          "this_charge": 3649,
+          "net": 3649,
+          "pay_type": "１回払",
+          "person": "松本　夏弥"
+        },
+        {
+          "date": "2026/04/04",
+          "shop": "オ−ケ−　ニシテラオテン",
+          "amount": 14945,
+          "refund": 0,
+          "this_charge": 14945,
+          "net": 14945,
+          "pay_type": "１回払",
+          "person": "松本　夏弥"
+        },
+        {
+          "date": "2026/04/05",
+          "shop": "ラインモバイル",
+          "amount": 2326,
+          "refund": 0,
+          "this_charge": 2326,
+          "net": 2326,
+          "pay_type": "１回払",
+          "person": "松本　夏弥"
+        }
+      ]
+    },
+    {
+      "file": "ご利用明細_202605.csv",
+      "card": "view",
+      "card_label": "ViewCard（未来）",
+      "payment_date": "2026年05月07日",
+      "payment_yyyymm": "202605",
+      "total": 175250,
+      "transactions": [
+        {
+          "date": "2026/03/11",
+          "shop": "ＭＩＤＪＯＵＲＮＥＹ　ＩＮＣ．",
+          "amount": 1806,
+          "refund": 0,
+          "this_charge": 1806,
+          "net": 1806,
+          "pay_type": "１回払",
+          "person": "松本　夏弥"
+        },
+        {
+          "date": "2026/03/07",
+          "shop": "ＡＭＡＺＯＮ．ＣＯ．ＪＰ",
+          "amount": 2222,
+          "refund": 0,
+          "this_charge": 2222,
+          "net": 2222,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/03/07",
+          "shop": "イオン　ジヤスコホカ",
+          "amount": 2960,
+          "refund": 0,
+          "this_charge": 2960,
+          "net": 2960,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/03/07",
+          "shop": "シ−ソ−",
+          "amount": 15400,
+          "refund": 0,
+          "this_charge": 15400,
+          "net": 15400,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/03/08",
+          "shop": "ＡＭＡＺＯＮ．ＣＯ．ＪＰ",
+          "amount": 1113,
+          "refund": 0,
+          "this_charge": 1113,
+          "net": 1113,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/03/08",
+          "shop": "ＡＭＡＺＯＮ．ＣＯ．ＪＰ",
+          "amount": 3080,
+          "refund": 0,
+          "this_charge": 3080,
+          "net": 3080,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/03/08",
+          "shop": "ＡＰＰＬＥ　ＣＯＭ　ＢＩＬＬ",
+          "amount": 650,
+          "refund": 0,
+          "this_charge": 650,
+          "net": 650,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/03/10",
+          "shop": "ＡＭＡＺＯＮ．ＣＯ．ＪＰ",
+          "amount": 701,
+          "refund": 0,
+          "this_charge": 701,
+          "net": 701,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/03/10",
+          "shop": "ＡＭＡＺＯＮ．ＣＯ．ＪＰ",
+          "amount": 3278,
+          "refund": 0,
+          "this_charge": 3278,
+          "net": 3278,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/03/11",
+          "shop": "２ガツブン　ＫＤＤＩリヨウキン",
+          "amount": 4984,
+          "refund": 0,
+          "this_charge": 4984,
+          "net": 4984,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/03/13",
+          "shop": "フィットケアデポ　ミョウレンジ",
+          "amount": 437,
+          "refund": 0,
+          "this_charge": 437,
+          "net": 437,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/03/14",
+          "shop": "ＡＭＡＺＯＮ．ＣＯ．ＪＰ",
+          "amount": 646,
+          "refund": 0,
+          "this_charge": 646,
+          "net": 646,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/03/14",
+          "shop": "ＡＭＡＺＯＮ．ＣＯ．ＪＰ",
+          "amount": 2280,
+          "refund": 0,
+          "this_charge": 2280,
+          "net": 2280,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/03/14",
+          "shop": "ＡＭＡＺＯＮ．ＣＯ．ＪＰ",
+          "amount": 4519,
+          "refund": 0,
+          "this_charge": 4519,
+          "net": 4519,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/03/14",
+          "shop": "ＡＭＡＺＯＮ．ＣＯ．ＪＰ",
+          "amount": 3204,
+          "refund": 0,
+          "this_charge": 3204,
+          "net": 3204,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/03/15",
+          "shop": "ＡＰＰＬＥ　ＣＯＭ　ＢＩＬＬ",
+          "amount": 1500,
+          "refund": 0,
+          "this_charge": 1500,
+          "net": 1500,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/03/15",
+          "shop": "セリア　トレツサヨコハマテン",
+          "amount": 660,
+          "refund": 0,
+          "this_charge": 660,
+          "net": 660,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/03/15",
+          "shop": "トレッサヨコハマ",
+          "amount": 1513,
+          "refund": 0,
+          "this_charge": 1513,
+          "net": 1513,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/03/15",
+          "shop": "トレッサヨコハマ",
+          "amount": 1683,
+          "refund": 0,
+          "this_charge": 1683,
+          "net": 1683,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/03/18",
+          "shop": "ＡＰＰＬＥ　ＣＯＭ　ＢＩＬＬ",
+          "amount": 590,
+          "refund": 0,
+          "this_charge": 590,
+          "net": 590,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/03/18",
+          "shop": "テ−マデブングラクテンイチバテン",
+          "amount": 1790,
+          "refund": 0,
+          "this_charge": 1790,
+          "net": 1790,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/03/18",
+          "shop": "セブン　イレブン",
+          "amount": 505,
+          "refund": 0,
+          "this_charge": 505,
+          "net": 505,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/03/20",
+          "shop": "ＡＭＡＺＯＮ．ＣＯ．ＪＰ",
+          "amount": 747,
+          "refund": 0,
+          "this_charge": 747,
+          "net": 747,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/03/20",
+          "shop": "ＡＭＡＺＯＮ．ＣＯ．ＪＰ",
+          "amount": 990,
+          "refund": 0,
+          "this_charge": 990,
+          "net": 990,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/03/20",
+          "shop": "ＡＭＡＺＯＮ．ＣＯ．ＪＰ",
+          "amount": 990,
+          "refund": 0,
+          "this_charge": 990,
+          "net": 990,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/03/20",
+          "shop": "ＡＭＡＺＯＮ．ＣＯ．ＪＰ",
+          "amount": 999,
+          "refund": 0,
+          "this_charge": 999,
+          "net": 999,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/03/20",
+          "shop": "ＡＭＡＺＯＮ．ＣＯ．ＪＰ",
+          "amount": 2112,
+          "refund": 0,
+          "this_charge": 2112,
+          "net": 2112,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/03/21",
+          "shop": "プラスタキヨウトカンセンチユウオウカイサツナイ",
+          "amount": 1640,
+          "refund": 0,
+          "this_charge": 1640,
+          "net": 1640,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/03/21",
+          "shop": "ＡＭＡＺＯＮ．ＣＯ．ＪＰ",
+          "amount": 18935,
+          "refund": 0,
+          "this_charge": 18935,
+          "net": 18935,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/03/21",
+          "shop": "ロ−ソン",
+          "amount": 201,
+          "refund": 0,
+          "this_charge": 201,
+          "net": 201,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/03/21",
+          "shop": "キヨウトポルタ（エキマエチカガイ）",
+          "amount": 1660,
+          "refund": 0,
+          "this_charge": 1660,
+          "net": 1660,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/03/21",
+          "shop": "スマ−トイ−エツクス　ジエイア−ルトウカイ",
+          "amount": 13500,
+          "refund": 0,
+          "this_charge": 13500,
+          "net": 13500,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/03/22",
+          "shop": "ＡＭＡＺＯＮ．ＣＯ．ＪＰ",
+          "amount": 848,
+          "refund": 0,
+          "this_charge": 848,
+          "net": 848,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/03/22",
+          "shop": "ＡＰＰＬＥ　ＣＯＭ　ＢＩＬＬ",
+          "amount": 1680,
+          "refund": 0,
+          "this_charge": 1680,
+          "net": 1680,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/03/23",
+          "shop": "ＡＭＡＺＯＮ．ＣＯ．ＪＰ",
+          "amount": 1260,
+          "refund": 0,
+          "this_charge": 1260,
+          "net": 1260,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/03/24",
+          "shop": "ＡＭＡＺＯＮ．ＣＯ．ＪＰ",
+          "amount": 973,
+          "refund": 0,
+          "this_charge": 973,
+          "net": 973,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/03/24",
+          "shop": "ＡＭＡＺＯＮ．ＣＯ．ＪＰ",
+          "amount": 1760,
+          "refund": 0,
+          "this_charge": 1760,
+          "net": 1760,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/03/24",
+          "shop": "ＡＭＡＺＯＮ．ＣＯ．ＪＰ",
+          "amount": 2180,
+          "refund": 0,
+          "this_charge": 2180,
+          "net": 2180,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/03/24",
+          "shop": "エリカランドラクテンイチバテン",
+          "amount": 1708,
+          "refund": 0,
+          "this_charge": 1708,
+          "net": 1708,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/03/24",
+          "shop": "カラフルキャンディスタイル",
+          "amount": 3090,
+          "refund": 0,
+          "this_charge": 3090,
+          "net": 3090,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/03/24",
+          "shop": "セブン　イレブン",
+          "amount": 411,
+          "refund": 0,
+          "this_charge": 411,
+          "net": 411,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/03/25",
+          "shop": "ロ−ソン",
+          "amount": 183,
+          "refund": 0,
+          "this_charge": 183,
+          "net": 183,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/03/26",
+          "shop": "ニュウマン横浜　横浜ＤＲＡセブン",
+          "amount": 8910,
+          "refund": 0,
+          "this_charge": 8910,
+          "net": 8910,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/03/26",
+          "shop": "横浜ポルタ",
+          "amount": 330,
+          "refund": 0,
+          "this_charge": 330,
+          "net": 330,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/03/26",
+          "shop": "ソゴウ　ヨコハマテン",
+          "amount": 748,
+          "refund": 0,
+          "this_charge": 748,
+          "net": 748,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/03/26",
+          "shop": "テイジヨイヨコハマ　コンセ",
+          "amount": 400,
+          "refund": 0,
+          "this_charge": 400,
+          "net": 400,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/03/27",
+          "shop": "ＡＭＡＺＯＮ．ＣＯ．ＪＰ",
+          "amount": 698,
+          "refund": 0,
+          "this_charge": 698,
+          "net": 698,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/03/27",
+          "shop": "ＡＭＡＺＯＮ．ＣＯ．ＪＰ",
+          "amount": 4948,
+          "refund": 0,
+          "this_charge": 4948,
+          "net": 4948,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/03/27",
+          "shop": "ＡＭＡＺＯＮ．ＣＯ．ＪＰ",
+          "amount": 7711,
+          "refund": 0,
+          "this_charge": 7711,
+          "net": 7711,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/03/27",
+          "shop": "ＡＭＡＺＯＮ．ＣＯ．ＪＰ",
+          "amount": 1227,
+          "refund": 0,
+          "this_charge": 1227,
+          "net": 1227,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/03/29",
+          "shop": "フィンガースーツ",
+          "amount": 2546,
+          "refund": 0,
+          "this_charge": 2546,
+          "net": 2546,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/03/29",
+          "shop": "ＡＭＡＺＯＮ．ＣＯ．ＪＰ",
+          "amount": 5192,
+          "refund": 0,
+          "this_charge": 5192,
+          "net": 5192,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/03/29",
+          "shop": "ＡＭＡＺＯＮＤＯＷＮＬＯＡＤＳ",
+          "amount": 580,
+          "refund": 0,
+          "this_charge": 580,
+          "net": 580,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/03/30",
+          "shop": "ＡＭＡＺＯＮ．ＣＯ．ＪＰ",
+          "amount": 518,
+          "refund": 0,
+          "this_charge": 518,
+          "net": 518,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/03/30",
+          "shop": "ゼットモ−ル",
+          "amount": 6158,
+          "refund": 0,
+          "this_charge": 6158,
+          "net": 6158,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/04/01",
+          "shop": "ＡＭＡＺＯＮ．ＣＯ．ＪＰ",
+          "amount": 2463,
+          "refund": 0,
+          "this_charge": 2463,
+          "net": 2463,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/04/01",
+          "shop": "クリエイト　エス　デイ−",
+          "amount": 2713,
+          "refund": 0,
+          "this_charge": 2713,
+          "net": 2713,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/04/02",
+          "shop": "ＡＰＰＬＥ　ＣＯＭ　ＢＩＬＬ",
+          "amount": 1100,
+          "refund": 0,
+          "this_charge": 1100,
+          "net": 1100,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/04/03",
+          "shop": "セブン　イレブン",
+          "amount": 321,
+          "refund": 0,
+          "this_charge": 321,
+          "net": 321,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/04/03",
+          "shop": "ケ−デイ−デイ−アイウイズホ−ムテ",
+          "amount": 5680,
+          "refund": 0,
+          "this_charge": 5680,
+          "net": 5680,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/04/04",
+          "shop": "ＡＭＡＺＯＮ．ＣＯ．ＪＰ",
+          "amount": 960,
+          "refund": 0,
+          "this_charge": 960,
+          "net": 960,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/04/04",
+          "shop": "ＡＭＡＺＯＮ．ＣＯ．ＪＰ",
+          "amount": 1139,
+          "refund": 0,
+          "this_charge": 1139,
+          "net": 1139,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/04/04",
+          "shop": "ＡＭＡＺＯＮ．ＣＯ．ＪＰ",
+          "amount": 3800,
+          "refund": 0,
+          "this_charge": 3800,
+          "net": 3800,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/04/05",
+          "shop": "ＡＭＡＺＯＮ．ＣＯ．ＪＰ",
+          "amount": 550,
+          "refund": 0,
+          "this_charge": 550,
+          "net": 550,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/04/05",
+          "shop": "ＡＭＡＺＯＮ．ＣＯ．ＪＰ",
+          "amount": 830,
+          "refund": 0,
+          "this_charge": 830,
+          "net": 830,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/04/05",
+          "shop": "ＡＭＡＺＯＮ．ＣＯ．ＪＰ",
+          "amount": 1410,
+          "refund": 0,
+          "this_charge": 1410,
+          "net": 1410,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/04/05",
+          "shop": "ＡＭＡＺＯＮ．ＣＯ．ＪＰ",
+          "amount": 1480,
+          "refund": 0,
+          "this_charge": 1480,
+          "net": 1480,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        },
+        {
+          "date": "2026/04/05",
+          "shop": "ＡＰＰＬＥ　ＣＯＭ　ＢＩＬＬ",
+          "amount": 1450,
+          "refund": 0,
+          "this_charge": 1450,
+          "net": 1450,
+          "pay_type": "１回払",
+          "person": "松本　未来"
+        }
+      ]
+    },
+    {
       "file": "ご利用明細_202604 (1).csv",
       "card": "lumine",
       "card_label": "ルミネカード（夏弥）",
