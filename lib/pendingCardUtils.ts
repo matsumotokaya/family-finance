@@ -116,10 +116,49 @@ export async function getLatestPendingSnapshot(): Promise<PendingSnapshot | null
     .filter(fileName => fileName.startsWith('未確定決済情報_'))
     .sort((a, b) => b.localeCompare(a, 'ja'));
 
-  const latestFile = candidates[0];
-  if (!latestFile) return null;
+  if (candidates.length === 0) return null;
 
-  const fullPath = path.join(creditCardDir, latestFile);
-  const content = await readFile(fullPath, 'utf8');
-  return parsePendingCardText(latestFile, content);
+  // 確定済みの取引をロードしてフィルタリングに使用する
+  const confirmedDataPath = path.join(process.cwd(), 'data', 'card_transactions.json');
+  let confirmedSet = new Set<string>();
+  try {
+    const confirmedData = JSON.parse(await readFile(confirmedDataPath, 'utf8'));
+    for (const statement of confirmedData.statements) {
+      for (const t of statement.transactions) {
+        // 比較用のキー: "YYYY-MM-DD-店舗名-金額"
+        // Note: 確定データは YYYY/MM/DD なので変換する
+        const date = t.date.replace(/\//g, '-');
+        confirmedSet.add(`${date}-${t.shop}-${t.amount}`);
+      }
+    }
+  } catch (e) {
+    console.error('Failed to load confirmed transactions:', e);
+  }
+
+  // 全ての未確定ファイルを読み込み、IDで重複排除しながらマージする
+  const allTransactionsMap = new Map<string, PendingTransaction>();
+  for (const fileName of candidates) {
+    const fullPath = path.join(creditCardDir, fileName);
+    const content = await readFile(fullPath, 'utf8');
+    const snapshot = parsePendingCardText(fileName, content);
+    
+    for (const t of snapshot.transactions) {
+      // 確定済みでないものだけを追加
+      if (!confirmedSet.has(`${t.date}-${t.merchant}-${t.amount}`)) {
+        // 同一ID（日付・カード・店舗・金額・出現順）があれば上書き（新しいファイルの方が情報が詳しい可能性があるため）
+        if (!allTransactionsMap.has(t.id)) {
+          allTransactionsMap.set(t.id, t);
+        }
+      }
+    }
+  }
+
+  const mergedTransactions = Array.from(allTransactionsMap.values());
+  const latestFile = candidates[0];
+
+  return {
+    fileName: latestFile,
+    snapshotDate: parseSnapshotDate(latestFile),
+    transactions: mergedTransactions,
+  };
 }
