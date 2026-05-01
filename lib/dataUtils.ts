@@ -6,6 +6,13 @@ export function getAvailableMonths(transactions: Transaction[]): { year: number;
     const d = new Date(t.date);
     set.add(`${d.getFullYear()}-${d.getMonth() + 1}`);
   });
+
+  // Always include the current month (JST)
+  const now = new Date();
+  // Adjust to JST (UTC+9) if needed, but since this runs on the user's machine/Vercel, 
+  // Date() usually reflects the system time.
+  set.add(`${now.getFullYear()}-${now.getMonth() + 1}`);
+
   return Array.from(set)
     .map(s => {
       const [y, m] = s.split('-').map(Number);
