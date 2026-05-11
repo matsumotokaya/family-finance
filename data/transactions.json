@@ -516,6 +516,50 @@
       "category": "internal_transfer",
       "note": "口座間移動",
       "balance_after": 2002990
+    },
+    {
+      "id": "mufg-2026-05-02-1",
+      "date": "2026-05-02",
+      "account": "mufg",
+      "type": "expense",
+      "amount": 23000,
+      "description": "口座振替 ＲＴＫ ＫＹＡＳＨ",
+      "category": "other_expense",
+      "note": "KYASH",
+      "balance_after": 1979990
+    },
+    {
+      "id": "mufg-2026-05-02-2",
+      "date": "2026-05-02",
+      "account": "mufg",
+      "type": "expense",
+      "amount": 5000,
+      "description": "口座振替 ＲＴＫ ＫＹＡＳＨ",
+      "category": "other_expense",
+      "note": "KYASH",
+      "balance_after": 1974990
+    },
+    {
+      "id": "mufg-2026-05-07-1",
+      "date": "2026-05-07",
+      "account": "mufg",
+      "type": "expense",
+      "amount": 378620,
+      "description": "口座振替３ ビユーカード",
+      "category": "card_payment",
+      "note": "VIEWカード引き落とし",
+      "balance_after": 1596370
+    },
+    {
+      "id": "mufg-2026-05-11-1",
+      "date": "2026-05-11",
+      "account": "mufg",
+      "type": "expense",
+      "amount": 59000,
+      "description": "カード",
+      "category": "card_payment",
+      "note": "",
+      "balance_after": 1537370
     }
   ]
 }
