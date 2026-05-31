@@ -560,6 +560,72 @@
       "category": "card_payment",
       "note": "",
       "balance_after": 1537370
+    },
+    {
+      "id": "mufg-2026-05-13-1",
+      "date": "2026-05-13",
+      "account": "mufg",
+      "type": "expense",
+      "amount": 13000,
+      "description": "BANCS ミツイスミトモギンコウ",
+      "category": "cash_withdrawal",
+      "note": "三井住友銀行ATM出金",
+      "balance_after": 1524370
+    },
+    {
+      "id": "mufg-2026-05-19-1",
+      "date": "2026-05-19",
+      "account": "mufg",
+      "type": "expense",
+      "amount": 3000,
+      "description": "BANCS ミツイスミトモギンコウ",
+      "category": "cash_withdrawal",
+      "note": "三井住友銀行ATM出金",
+      "balance_after": 1521370
+    },
+    {
+      "id": "mufg-2026-05-20-1",
+      "date": "2026-05-20",
+      "account": "mufg",
+      "type": "expense",
+      "amount": 124000,
+      "description": "カード",
+      "category": "card_payment",
+      "note": "",
+      "balance_after": 1397370
+    },
+    {
+      "id": "mufg-2026-05-25-1",
+      "date": "2026-05-25",
+      "account": "mufg",
+      "type": "income",
+      "amount": 525246,
+      "description": "振込１ ウエルスパーク（カ",
+      "category": "salary",
+      "note": "5月給与",
+      "balance_after": 1922616
+    },
+    {
+      "id": "mufg-2026-05-27-1",
+      "date": "2026-05-27",
+      "account": "mufg",
+      "type": "expense",
+      "amount": 16920,
+      "description": "口座振替３ ＤＦ．ホシヨウセイド",
+      "category": "other_expense",
+      "note": "DF.保証制度",
+      "balance_after": 1905696
+    },
+    {
+      "id": "mufg-2026-05-27-2",
+      "date": "2026-05-27",
+      "account": "mufg",
+      "type": "expense",
+      "amount": 49090,
+      "description": "口座振替３ ＤＦ．ホシヨウセイド",
+      "category": "other_expense",
+      "note": "DF.保証制度",
+      "balance_after": 1856606
     }
   ]
 }
