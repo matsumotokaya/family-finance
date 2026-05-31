@@ -551,6 +551,17 @@
       "balance_after": 1596370
     },
     {
+      "id": "resona-2026-05-07-1",
+      "date": "2026-05-07",
+      "account": "resona",
+      "type": "transfer",
+      "amount": 350000,
+      "description": "振込 マツモト カヤ",
+      "category": "internal_transfer",
+      "note": "口座間移動（収支計算から除外）",
+      "balance_after": 388103
+    },
+    {
       "id": "mufg-2026-05-11-1",
       "date": "2026-05-11",
       "account": "mufg",
@@ -626,6 +637,28 @@
       "category": "other_expense",
       "note": "DF.保証制度",
       "balance_after": 1856606
+    },
+    {
+      "id": "resona-2026-06-01-1",
+      "date": "2026-06-01",
+      "account": "resona",
+      "type": "expense",
+      "amount": 107321,
+      "description": "ローン",
+      "category": "housing_loan",
+      "note": "住宅ローン",
+      "balance_after": 280782
+    },
+    {
+      "id": "resona-2026-06-01-2",
+      "date": "2026-06-01",
+      "account": "resona",
+      "type": "expense",
+      "amount": 8089,
+      "description": "ローン",
+      "category": "housing_loan",
+      "note": "住宅ローン",
+      "balance_after": 272693
     }
   ]
 }
