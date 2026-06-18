@@ -659,6 +659,72 @@
       "category": "housing_loan",
       "note": "住宅ローン",
       "balance_after": 272693
+    },
+    {
+      "id": "mufg-2026-06-01-1",
+      "date": "2026-06-01",
+      "account": "mufg",
+      "type": "expense",
+      "amount": 5000,
+      "description": "BANCS ミツイスミトモギンコウ",
+      "category": "cash_withdrawal",
+      "note": "現金引き出し",
+      "balance_after": 1851606
+    },
+    {
+      "id": "mufg-2026-06-01-2",
+      "date": "2026-06-01",
+      "account": "mufg",
+      "type": "expense",
+      "amount": 34570,
+      "description": "口座振替 RTK KYASH",
+      "category": "other_expense",
+      "note": "KYASH",
+      "balance_after": 1817036
+    },
+    {
+      "id": "mufg-2026-06-04-1",
+      "date": "2026-06-04",
+      "account": "mufg",
+      "type": "expense",
+      "amount": 320464,
+      "description": "口座振替3 ビユーカード",
+      "category": "card_payment",
+      "note": "VIEWカード引き落とし",
+      "balance_after": 1496572
+    },
+    {
+      "id": "mufg-2026-06-08-1",
+      "date": "2026-06-08",
+      "account": "mufg",
+      "type": "expense",
+      "amount": 5000,
+      "description": "BANCS ミツイスミトモギンコウ",
+      "category": "cash_withdrawal",
+      "note": "現金引き出し",
+      "balance_after": 1491572
+    },
+    {
+      "id": "mufg-2026-06-15-1",
+      "date": "2026-06-15",
+      "account": "mufg",
+      "type": "income",
+      "amount": 40000,
+      "description": "振込2 ヨコハマシジドウテア",
+      "category": "child_allowance",
+      "note": "横浜市児童手当",
+      "balance_after": 1531572
+    },
+    {
+      "id": "mufg-2026-06-15-2",
+      "date": "2026-06-15",
+      "account": "mufg",
+      "type": "expense",
+      "amount": 2000,
+      "description": "BANCS ミツイスミトモギンコウ",
+      "category": "cash_withdrawal",
+      "note": "現金引き出し",
+      "balance_after": 1529572
     }
   ]
 }
