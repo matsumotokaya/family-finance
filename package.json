@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "import:cards": "node scripts/import-card-csv.mjs",
+    "refresh:latest": "node scripts/refresh-latest.mjs",
     "build": "next build",
     "start": "next start"
   },

@@ -725,6 +725,105 @@
       "category": "cash_withdrawal",
       "note": "現金引き出し",
       "balance_after": 1529572
+    },
+    {
+      "id": "mufg-2026-06-20-1",
+      "date": "2026-06-20",
+      "account": "mufg",
+      "type": "expense",
+      "amount": 12000,
+      "description": "口座振替 RTK ペイペイ",
+      "category": "other_expense",
+      "note": "PayPay",
+      "balance_after": 1517572
+    },
+    {
+      "id": "mufg-2026-06-21-1",
+      "date": "2026-06-21",
+      "account": "mufg",
+      "type": "expense",
+      "amount": 3000,
+      "description": "口座振替 RTK ペイペイ",
+      "category": "other_expense",
+      "note": "PayPay",
+      "balance_after": 1514572
+    },
+    {
+      "id": "mufg-2026-06-22-1",
+      "date": "2026-06-22",
+      "account": "mufg",
+      "type": "income",
+      "amount": 3929,
+      "description": "振込2 カ）ビユーカード.",
+      "category": "other_income",
+      "note": "VIEWカード返金",
+      "balance_after": 1518501
+    },
+    {
+      "id": "mufg-2026-06-23-1",
+      "date": "2026-06-23",
+      "account": "mufg",
+      "type": "expense",
+      "amount": 10000,
+      "description": "口座振替 RTK ペイペイ",
+      "category": "other_expense",
+      "note": "PayPay",
+      "balance_after": 1508501
+    },
+    {
+      "id": "mufg-2026-06-25-1",
+      "date": "2026-06-25",
+      "account": "mufg",
+      "type": "income",
+      "amount": 516742,
+      "description": "給料",
+      "category": "salary",
+      "note": "6月給与",
+      "balance_after": 2025243
+    },
+    {
+      "id": "mufg-2026-06-29-1",
+      "date": "2026-06-29",
+      "account": "mufg",
+      "type": "expense",
+      "amount": 5439,
+      "description": "口座振替3 オオグチダイシヨ (H",
+      "category": "utilities",
+      "note": "",
+      "balance_after": 2019804
+    },
+    {
+      "id": "mufg-2026-06-29-2",
+      "date": "2026-06-29",
+      "account": "mufg",
+      "type": "expense",
+      "amount": 6099,
+      "description": "口座振替3 オオグチダイシヨ (H",
+      "category": "utilities",
+      "note": "",
+      "balance_after": 2013705
+    },
+    {
+      "id": "resona-2026-06-30-1",
+      "date": "2026-06-30",
+      "account": "resona",
+      "type": "expense",
+      "amount": 107321,
+      "description": "ローン",
+      "category": "housing_loan",
+      "note": "住宅ローン",
+      "balance_after": 165372
+    },
+    {
+      "id": "resona-2026-06-30-2",
+      "date": "2026-06-30",
+      "account": "resona",
+      "type": "expense",
+      "amount": 8089,
+      "description": "ローン",
+      "category": "housing_loan",
+      "note": "住宅ローン",
+      "balance_after": 157283
     }
   ]
 }

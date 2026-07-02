@@ -69,7 +69,7 @@ export default function InfoPage({ config, transactions }: Props) {
               <div>
                 <p className="text-sm font-bold text-slate-800">支出の内訳 — VIEWカード・ルミネカード</p>
                 <p className="text-xs text-slate-500 mt-0.5 leading-relaxed">
-                  VIEWカードは夫（夏弥）・妻（未来）の2枚が発行されており、妻のカードは月{formatCurrency(50000)}の利用上限が設定されています。ルミネカードは夫名義のメインカードです。毎月、カード会社サイトからCSVをダウンロードして更新します。
+                  VIEWカードは夫（夏弥）・妻（未来）の2枚が発行されており、妻のカードは月{formatCurrency(40000)}の利用上限が設定されています。ルミネカードは夫名義のメインカードです。毎月、カード会社サイトからCSVをダウンロードし、確定明細を取り込みます。
                 </p>
                 <Link href="/cards" className="inline-block mt-2 text-xs font-bold text-blue-600">
                   カード明細を見る →
@@ -124,9 +124,8 @@ export default function InfoPage({ config, transactions }: Props) {
           <h2 className="text-sm font-black text-slate-800 mb-3">現在の設定値</h2>
           <dl className="space-y-2 text-sm">
             {[
-              ['標準収入（見込み収支の基準）', formatCurrency(config.standardMonthlyIncome)],
               ['月次貯蓄目標', formatCurrency(config.monthlyTargetSavings)],
-              ['VIEWカード（未来）上限', formatCurrency(50000)],
+              ['VIEWカード（未来）上限', formatCurrency(40000)],
               ['住宅ローン減税 終了予定', `${config.mortgageEndYear}年${config.mortgageEndMonth}月`],
             ].map(([label, value]) => (
               <div key={label} className="flex justify-between items-center py-1.5 border-b border-slate-50 last:border-0">

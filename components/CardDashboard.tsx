@@ -78,7 +78,7 @@ export default function CardDashboard({ statements }: Props) {
         {/* ViewCard 未来 — MAIN ALERT */}
         <div className={`rounded-2xl p-4 shadow-sm ${isOver ? 'bg-red-600 text-white' : 'bg-emerald-50 border border-emerald-200'}`}>
           <p className={`text-xs font-bold mb-1 ${isOver ? 'text-white/80' : 'text-slate-500'}`}>
-            VIEWカード（未来） — 月¥50,000 上限
+            VIEWカード（未来） — 月¥40,000 上限
           </p>
           <div className="flex items-end justify-between">
             <p className={`text-3xl font-black ${isOver ? 'text-white' : 'text-emerald-700'}`}>
@@ -116,7 +116,7 @@ export default function CardDashboard({ statements }: Props) {
               <YAxis tick={{ fontSize: 10, fill: '#94a3b8' }} tickFormatter={fmtK} width={36} />
               <Tooltip formatter={(v: number) => fmt(v)} contentStyle={{ fontSize: 12, borderRadius: 8 }} />
               <ReferenceLine y={VIEW_CARD_MIKU_LIMIT} stroke="#ef4444" strokeDasharray="4 2"
-                label={{ value: '上限¥5万', fontSize: 9, fill: '#ef4444', position: 'right' }} />
+                label={{ value: '上限¥4万', fontSize: 9, fill: '#ef4444', position: 'right' }} />
               <Bar dataKey="viewMiku" name="未来VIEW" stackId="a" fill="#ef4444" radius={[0, 0, 0, 0]} maxBarSize={28} />
               <Bar dataKey="viewNatsuya" name="夏弥VIEW" stackId="a" fill="#f97316" maxBarSize={28} />
               <Bar dataKey="lumine" name="ルミネ" stackId="a" fill="#8b5cf6" radius={[4, 4, 0, 0]} maxBarSize={28} />

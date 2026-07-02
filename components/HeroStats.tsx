@@ -1,11 +1,10 @@
 'use client';
 import { useState } from 'react';
-import { MonthlyStats, AppConfig, Transaction } from '@/types';
+import { MonthlyStats, Transaction } from '@/types';
 import { formatCurrency, CATEGORY_LABELS, CATEGORY_COLORS, ACCOUNT_LABELS } from '@/lib/dataUtils';
 
 interface Props {
   stats: MonthlyStats;
-  config: AppConfig;
 }
 
 function TransactionRows({ transactions }: { transactions: Transaction[] }) {
@@ -56,41 +55,37 @@ function TransactionRows({ transactions }: { transactions: Transaction[] }) {
   );
 }
 
-export default function HeroStats({ stats, config }: Props) {
-  const { totalIncome, totalExpense, netBalance, projectedNetBalance } = stats;
-  const projectedDeficit = projectedNetBalance < 0;
+export default function HeroStats({ stats }: Props) {
+  const { totalIncome, totalExpense, netBalance } = stats;
   const actualDeficit = netBalance < 0;
   const [open, setOpen] = useState(false);
 
   return (
     <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
-      {/* Top row: expense + projected balance */}
+      {/* Top row: expense + actual balance */}
       <div className="grid grid-cols-2 divide-x divide-slate-100">
         <div className="p-4 text-center">
           <p className="text-xs text-slate-500 font-medium mb-1">今月の支出</p>
           <p className="text-3xl font-black text-slate-800">{formatCurrency(totalExpense)}</p>
         </div>
-        <div className={`p-4 text-center ${projectedDeficit ? 'bg-red-500' : 'bg-emerald-500'}`}>
-          <p className="text-xs font-medium mb-1 text-white/80">見込み収支</p>
+        <div className={`p-4 text-center ${actualDeficit ? 'bg-red-500' : 'bg-emerald-500'}`}>
+          <p className="text-xs font-medium mb-1 text-white/80">今月の収支</p>
           <p className="text-3xl font-black text-white">
-            {projectedDeficit ? '−' : '+'}{formatCurrency(Math.abs(projectedNetBalance))}
-          </p>
-          <p className="text-xs text-white/70 mt-0.5">
-            標準収入 {formatCurrency(config.standardMonthlyIncome)} 基準
+            {actualDeficit ? '−' : '+'}{formatCurrency(Math.abs(netBalance))}
           </p>
         </div>
       </div>
 
-      {/* Bottom row: actual income + actual balance */}
+      {/* Bottom row: actual income + status */}
       <div className="border-t border-slate-100 px-4 py-2.5 flex items-center justify-between bg-slate-50">
         <div className="flex items-center gap-2">
-          <span className="text-xs text-slate-500">確定収入</span>
+          <span className="text-xs text-slate-500">今月の収入</span>
           <span className="text-sm font-bold text-emerald-600">{formatCurrency(totalIncome)}</span>
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-xs text-slate-500">確定収支</span>
+          <span className="text-xs text-slate-500">データ状態</span>
           <span className={`text-sm font-bold ${actualDeficit ? 'text-red-500' : 'text-emerald-600'}`}>
-            {actualDeficit ? '−' : '+'}{formatCurrency(Math.abs(netBalance))}
+            {stats.isIncomplete ? '月途中' : '確定'}
           </span>
         </div>
       </div>

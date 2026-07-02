@@ -105,13 +105,21 @@
 
 **CSVファイルの置き場:**
 ```
-family-budget/credit-card/
+family-finance/credit-card/
   ご利用明細_YYYYMM.csv       ← VIEWカード（夏弥・未来混在、番号末尾で自動判別）
   ご利用明細_YYYYMM (1).csv  ← ルミネカード（夏弥）
 ```
-ファイル名はダウンロード時のままでOK。同じフォルダに入れてClaudeに「カード更新して」と伝えるだけ。
+ファイル名はダウンロード時のままでOKです。
 
-### ステップ3：Claudeへの依頼文（コピペ用）
+通常画面は `credit-card/` を直接読みません。CSV追加後に次を実行して `data/card_transactions.json` を更新してください。
+
+```bash
+npm run import:cards
+```
+
+`credit-card/` を直接読むのは `未確定決済情報_*` を表示する `/pending` ページだけです。
+
+### ステップ3：エージェントへの依頼文（コピペ用）
 
 ```
 今月分のデータを更新してください。
@@ -194,7 +202,7 @@ npx vercel --prod
 ## ファイル構成
 
 ```
-family-budget/
+family-finance/
 ├── app/
 │   ├── page.tsx            # メインダッシュボード（/）
 │   ├── cards/page.tsx      # カード明細分析（/cards）
@@ -212,11 +220,13 @@ family-budget/
 │   ├── InfoPage.tsx        # 情報ページ
 │   └── HamburgerMenu.tsx   # ハンバーガーメニュー
 ├── data/
-│   ├── transactions.json      # 銀行取引データ ← スクショから毎月更新
-│   ├── card_transactions.json # カード明細データ ← CSVから自動生成
+│   ├── transactions.json      # 銀行取引データ ← スクショを見て手動反映
+│   ├── card_transactions.json # カード明細データ ← `npm run import:cards` で再生成
 │   └── config.json            # アプリ設定（目標貯蓄額・ローン減税終了年等）
-├── credit-card/            # カードCSV置き場 ← ここにCSVを追加するだけ
+├── credit-card/            # カードCSV置き場
 │   └── ご利用明細_YYYYMM.csv
+├── scripts/
+│   └── import-card-csv.mjs # 確定カードCSVから data/card_transactions.json を生成
 ├── lib/
 │   ├── dataUtils.ts        # 銀行データ処理ロジック
 │   ├── cardUtils.ts        # カードデータ処理ロジック
@@ -251,6 +261,13 @@ family-budget/
 
 **接続先**: `https://rgqduwojvylkulhyodqg.supabase.co`
 **環境変数**: `.env.local` に `NEXT_PUBLIC_SUPABASE_URL` と `NEXT_PUBLIC_SUPABASE_ANON_KEY` を設定（要ローカル設定、Vercelにも登録必要）
+
+## 現在の反映ルール
+
+- 最新化の起点は `npm run refresh:latest` です。確定カードCSVの再生成と、最新の銀行・未確定決済ファイルの確認をまとめて行います。
+- 銀行スクリーンショットは `bank/` に置いただけでは反映されません。内容を確認して `data/transactions.json` に追記する必要があります。
+- 確定カードCSVは `credit-card/` に置いた後、`npm run import:cards` を実行すると `data/card_transactions.json` に反映されます。
+- 未確定カード明細（`未確定決済情報_*`）は `/pending` ページ表示時に `credit-card/` から直接読み込まれます。
 
 ---
 

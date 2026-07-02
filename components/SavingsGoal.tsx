@@ -8,11 +8,11 @@ interface Props {
 }
 
 export default function SavingsGoal({ stats, config }: Props) {
-  const { projectedNetBalance } = stats;
+  const { netBalance } = stats;
   const target = config.monthlyTargetSavings;
-  const isDeficit = projectedNetBalance < 0;
-  const ratio = isDeficit ? 0 : Math.min((projectedNetBalance / target) * 100, 100);
-  const achieved = projectedNetBalance >= target;
+  const isDeficit = netBalance < 0;
+  const ratio = isDeficit ? 0 : Math.min((netBalance / target) * 100, 100);
+  const achieved = netBalance >= target;
 
   return (
     <div className="bg-white rounded-2xl p-4 shadow-sm">
@@ -36,13 +36,13 @@ export default function SavingsGoal({ stats, config }: Props) {
         isDeficit ? 'text-red-600' : achieved ? 'text-emerald-600' : 'text-amber-600'
       }`}>
         {isDeficit
-          ? `⚠️ 標準収入を超過 — 貯蓄ゼロです`
+          ? '⚠️ 今月は赤字です'
           : achieved
-          ? `✅ 目標達成見込み！ ${formatCurrency(projectedNetBalance)} の余裕`
-          : `📉 目標まであと ${formatCurrency(target - projectedNetBalance)} 不足`}
+          ? `✅ 目標達成！ ${formatCurrency(netBalance)} の余裕`
+          : `📉 目標まであと ${formatCurrency(target - netBalance)} 不足`}
       </p>
       <p className="text-xs text-slate-400 text-center mt-1">
-        ※ 標準収入 {formatCurrency(config.standardMonthlyIncome)} 基準
+        ※ 実際の収支ベース
       </p>
     </div>
   );

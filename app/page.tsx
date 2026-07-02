@@ -1,16 +1,10 @@
-import Dashboard from '@/components/Dashboard';
+import { redirect } from 'next/navigation';
 import transactionsData from '@/data/transactions.json';
-import configData from '@/data/config.json';
-import cardData from '@/data/card_transactions.json';
-import { Transaction, AppConfig } from '@/types';
-import { CardStatement } from '@/lib/cardUtils';
+import { Transaction } from '@/types';
+import { getAvailableMonths, getMonthKey } from '@/lib/dataUtils';
 
 export default function Home() {
-  return (
-    <Dashboard
-      transactions={transactionsData.transactions as Transaction[]}
-      config={configData as AppConfig}
-      cardStatements={cardData.statements as CardStatement[]}
-    />
-  );
+  const months = getAvailableMonths(transactionsData.transactions as Transaction[]);
+  const latest = months[months.length - 1];
+  redirect(`/${getMonthKey(latest.year, latest.month)}`);
 }

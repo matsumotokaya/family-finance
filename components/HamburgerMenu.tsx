@@ -15,6 +15,7 @@ const NAV_ITEMS = [
 export default function HamburgerMenu() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const isMonthRoute = /^\/\d{4}-\d{2}$/.test(pathname);
 
   return (
     <>
@@ -57,7 +58,7 @@ export default function HamburgerMenu() {
               href={item.href}
               onClick={() => setOpen(false)}
               className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-colors ${
-                pathname === item.href
+                (item.href === '/' ? pathname === '/' || isMonthRoute : pathname === item.href)
                   ? 'bg-slate-900 text-white'
                   : 'text-slate-700 hover:bg-slate-100'
               }`}
