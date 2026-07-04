@@ -1,13 +1,11 @@
 import InfoPage from '@/components/InfoPage';
 import configData from '@/data/config.json';
-import transactionsData from '@/data/transactions.json';
-import { AppConfig, Transaction } from '@/types';
+import { AppConfig } from '@/types';
+import { getBankTransactions } from '@/lib/dataSource';
 
-export default function Info() {
-  return (
-    <InfoPage
-      config={configData as AppConfig}
-      transactions={transactionsData.transactions as Transaction[]}
-    />
-  );
+export const dynamic = 'force-dynamic';
+
+export default async function Info() {
+  const transactions = await getBankTransactions();
+  return <InfoPage config={configData as AppConfig} transactions={transactions} />;
 }

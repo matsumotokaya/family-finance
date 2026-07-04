@@ -1,10 +1,12 @@
 import { redirect } from 'next/navigation';
-import transactionsData from '@/data/transactions.json';
-import { Transaction } from '@/types';
 import { getAvailableMonths, getMonthKey } from '@/lib/dataUtils';
+import { getBankTransactions } from '@/lib/dataSource';
 
-export default function Home() {
-  const months = getAvailableMonths(transactionsData.transactions as Transaction[]);
+export const dynamic = 'force-dynamic';
+
+export default async function Home() {
+  const transactions = await getBankTransactions();
+  const months = getAvailableMonths(transactions);
   const latest = months[months.length - 1];
   redirect(`/${getMonthKey(latest.year, latest.month)}`);
 }

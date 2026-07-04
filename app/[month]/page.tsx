@@ -1,9 +1,9 @@
 import { notFound } from 'next/navigation';
 import Dashboard from '@/components/Dashboard';
-import transactionsData from '@/data/transactions.json';
 import configData from '@/data/config.json';
-import { Transaction, AppConfig } from '@/types';
+import { AppConfig } from '@/types';
 import { getAvailableMonths, getMonthKey, getMonthLabel, parseMonthKey } from '@/lib/dataUtils';
+import { getBankTransactions } from '@/lib/dataSource';
 
 export const dynamic = 'force-dynamic';
 
@@ -14,11 +14,11 @@ export async function generateMetadata({ params }: { params: { month: string } }
   };
 }
 
-export default function MonthlyHomePage({ params }: { params: { month: string } }) {
+export default async function MonthlyHomePage({ params }: { params: { month: string } }) {
   const parsed = parseMonthKey(params.month);
   if (!parsed) notFound();
 
-  const transactions = transactionsData.transactions as Transaction[];
+  const transactions = await getBankTransactions();
   const availableMonths = getAvailableMonths(transactions);
   const monthKey = getMonthKey(parsed.year, parsed.month);
   const exists = availableMonths.some(({ year, month }) => getMonthKey(year, month) === monthKey);

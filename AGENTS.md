@@ -16,6 +16,14 @@ Before `git push`, PR creation, or `gh` operations:
 - check `gh auth status`
 - confirm `gh auth status` shows `matsumotokaya`
 
+## Deploy / Branching
+
+This repository auto-deploys to production (Vercel) on every push to `main`.
+
+- `main` IS the deploy branch. Commit and push directly to `main`.
+- Do NOT create feature branches or open PRs for normal changes — that would skip deployment.
+- The generic "branch before committing on the default branch" default does not apply here.
+
 ## MCP Usage
 
 When working in this project, do not call the AWS MCP or Supabase MCP.

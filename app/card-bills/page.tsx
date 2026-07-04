@@ -1,7 +1,9 @@
 import CardBillsHistory from '@/components/CardBillsHistory';
-import cardData from '@/data/card_transactions.json';
-import { CardStatement } from '@/lib/cardUtils';
+import { getCardStatements } from '@/lib/dataSource';
 
-export default function CardBillsPage() {
-  return <CardBillsHistory statements={cardData.statements as CardStatement[]} />;
+export const dynamic = 'force-dynamic';
+
+export default async function CardBillsPage() {
+  const statements = await getCardStatements();
+  return <CardBillsHistory statements={statements} />;
 }

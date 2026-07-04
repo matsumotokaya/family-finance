@@ -1,7 +1,9 @@
 import CardDashboard from '@/components/CardDashboard';
-import cardData from '@/data/card_transactions.json';
-import { CardStatement } from '@/lib/cardUtils';
+import { getCardStatements } from '@/lib/dataSource';
 
-export default function CardsPage() {
-  return <CardDashboard statements={cardData.statements as CardStatement[]} />;
+export const dynamic = 'force-dynamic';
+
+export default async function CardsPage() {
+  const statements = await getCardStatements();
+  return <CardDashboard statements={statements} />;
 }

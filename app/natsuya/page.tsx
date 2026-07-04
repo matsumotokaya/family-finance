@@ -1,14 +1,12 @@
 import NatsuyaDashboard from '@/components/NatsuyaDashboard';
-import transactionsData from '@/data/transactions.json';
-import cardData from '@/data/card_transactions.json';
-import { Transaction } from '@/types';
-import { CardStatement } from '@/lib/cardUtils';
+import { getBankTransactions, getCardStatements } from '@/lib/dataSource';
 
-export default function NatsuyaPage() {
-  return (
-    <NatsuyaDashboard
-      transactions={transactionsData.transactions as Transaction[]}
-      cardStatements={cardData.statements as CardStatement[]}
-    />
-  );
+export const dynamic = 'force-dynamic';
+
+export default async function NatsuyaPage() {
+  const [transactions, cardStatements] = await Promise.all([
+    getBankTransactions(),
+    getCardStatements(),
+  ]);
+  return <NatsuyaDashboard transactions={transactions} cardStatements={cardStatements} />;
 }
