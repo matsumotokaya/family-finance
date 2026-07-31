@@ -35,6 +35,7 @@ async function loadSupabasePending(): Promise<{ transactions: PendingTransaction
 
   try {
     const { data, error } = await supabase.from('ff_pending_transactions').select('*');
+    console.log('[debug-pending] loadSupabasePending: data?.length =', data?.length, 'error =', error ? JSON.stringify(error) : null);
     if (error || !data) return { transactions: [] };
 
     const rows = data as PendingRow[];
