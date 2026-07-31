@@ -13,14 +13,28 @@ export async function GET() {
   let rawError: string | null = null;
   let starCount: number | null = null;
   let starError: string | null = null;
+  let starStatus: number | null = null;
+  let plainFetchCount: number | null = null;
+  let plainFetchStatus: number | null = null;
   if (supabase) {
     const { data, error } = await supabase.from('ff_pending_transactions').select('id,date');
     rawCount = data?.length ?? null;
     rawError = error?.message ?? null;
 
-    const { data: starData, error: starErr } = await supabase.from('ff_pending_transactions').select('*');
-    starCount = starData?.length ?? null;
-    starError = starErr?.message ?? null;
+    const starRes = await supabase.from('ff_pending_transactions').select('*');
+    starCount = starRes.data?.length ?? null;
+    starError = starRes.error?.message ?? null;
+    starStatus = starRes.status;
+
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+    const plainRes = await fetch(`${url}/rest/v1/ff_pending_transactions?select=*`, {
+      headers: { apikey: key, Authorization: `Bearer ${key}` },
+      cache: 'no-store',
+    });
+    plainFetchStatus = plainRes.status;
+    const plainJson = await plainRes.json().catch(() => null);
+    plainFetchCount = Array.isArray(plainJson) ? plainJson.length : null;
   }
 
   const snapshot = await getLatestPendingSnapshot();
@@ -41,6 +55,9 @@ export async function GET() {
     rawError,
     starCount,
     starError,
+    starStatus,
+    plainFetchCount,
+    plainFetchStatus,
     snapshotFileName: snapshot?.fileName,
     snapshotTxCount: snapshot?.transactions.length,
     months,
