@@ -1,6 +1,8 @@
 import { redirect } from 'next/navigation';
 import { getLatestPendingSnapshot, getPendingMonths } from '@/lib/pendingCardUtils';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
   title: '未確定決済情報 | 家計ダッシュボード',
 };
