@@ -116,6 +116,17 @@ export async function getLatestPendingSnapshot(): Promise<PendingSnapshot | null
   }
 
   const supabasePending = await loadSupabasePending();
+  console.log('[debug-pending] supabasePending.transactions.length =', supabasePending.transactions.length);
+  console.log('[debug-pending] confirmedSet.size =', confirmedSet.size);
+  let skippedConfirmed = 0;
+  let skippedDup = 0;
+  let added = 0;
+  for (const t of supabasePending.transactions) {
+    if (confirmedSet.has(`${t.date}-${t.merchant}-${t.amount}`)) { skippedConfirmed += 1; continue; }
+    if (allTransactionsMap.has(t.id)) { skippedDup += 1; continue; }
+    added += 1;
+  }
+  console.log('[debug-pending] added =', added, 'skippedConfirmed =', skippedConfirmed, 'skippedDup =', skippedDup);
   addTransactions(supabasePending.transactions);
 
   if (allTransactionsMap.size === 0 && candidates.length === 0) {
