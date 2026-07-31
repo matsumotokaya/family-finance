@@ -11,10 +11,16 @@ export async function GET() {
   const supabase = getSupabaseServer();
   let rawCount: number | null = null;
   let rawError: string | null = null;
+  let starCount: number | null = null;
+  let starError: string | null = null;
   if (supabase) {
     const { data, error } = await supabase.from('ff_pending_transactions').select('id,date');
     rawCount = data?.length ?? null;
     rawError = error?.message ?? null;
+
+    const { data: starData, error: starErr } = await supabase.from('ff_pending_transactions').select('*');
+    starCount = starData?.length ?? null;
+    starError = starErr?.message ?? null;
   }
 
   const snapshot = await getLatestPendingSnapshot();
@@ -33,6 +39,8 @@ export async function GET() {
     hasKey,
     rawCount,
     rawError,
+    starCount,
+    starError,
     snapshotFileName: snapshot?.fileName,
     snapshotTxCount: snapshot?.transactions.length,
     months,
