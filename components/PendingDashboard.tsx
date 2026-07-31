@@ -10,6 +10,16 @@ import { BubbleIcon, CommentInput, CommentList } from './CommentUI';
 
 const PERSON = 'mirai_pending';
 
+// This page manages only the VIEW card (Mirai, last-4 = 0406).
+//
+// EXCEPTION: the pasted "未確定決済情報" sometimes mixes in a different card
+// (last-4 = 1205: ETC / overseas charges, etc.). 1205 belongs to a separate
+// card that should have its own page. As a temporary measure, on this page we:
+//   - drop 1205 from the detail list (not shown, not counted in totals)
+//   - keep it visible in the per-card summary, greyed out and labelled "(除外済み)"
+// Future: split the pending page per card. See README「未確定決済情報ページ」.
+const PENDING_TARGET_CARD_LAST4 = '0406';
+
 interface DBComment {
   id: number;
   item_id: string;
@@ -94,10 +104,19 @@ export default function PendingDashboard({ snapshot, selectedMonth, availableMon
     });
   }, [selectedMonth]);
 
+  // 当月の全未確定明細（対象カード + 除外カード両方）
+  const monthTransactions = useMemo(
+    () =>
+      snapshot.transactions
+        .filter(transaction => transaction.date.slice(0, 7).replace('-', '') === selectedMonth)
+        .sort((a, b) => b.date.localeCompare(a.date)),
+    [selectedMonth, snapshot.transactions]
+  );
+
+  // 明細本体は対象カード（0406）のみ。1205 など別カードはここで除外される。
   const items = useMemo<ListItem[]>(() => {
-    return snapshot.transactions
-      .filter(transaction => transaction.date.slice(0, 7).replace('-', '') === selectedMonth)
-      .sort((a, b) => b.date.localeCompare(a.date))
+    return monthTransactions
+      .filter(transaction => transaction.cardLast4 === PENDING_TARGET_CARD_LAST4)
       .map(transaction => ({
         id: transaction.id,
         line1: transaction.merchant,
@@ -112,7 +131,7 @@ export default function PendingDashboard({ snapshot, selectedMonth, availableMon
         amount: transaction.amount,
         raw: transaction,
       }));
-  }, [selectedMonth, snapshot.transactions]);
+  }, [monthTransactions]);
 
   const activeItems = useMemo(
     () => items.filter(item => !excludedIds.has(item.id)),
@@ -123,7 +142,12 @@ export default function PendingDashboard({ snapshot, selectedMonth, availableMon
     .filter(item => excludedIds.has(item.id))
     .reduce((sum, item) => sum + item.amount, 0);
   const excludedCount = items.filter(item => excludedIds.has(item.id)).length;
+  // 対象カードの集計（手動除外を反映）。従来どおり。
   const cardSummaries = summarizeByCard(activeItems.map(item => item.raw));
+  // 別カード（1205 など）はグレーアウト表示のみ。合計・予算には一切含めない。
+  const excludedCardSummaries = summarizeByCard(
+    monthTransactions.filter(transaction => transaction.cardLast4 !== PENDING_TARGET_CARD_LAST4)
+  );
   const nextMonthBudget = VIEW_CARD_MIKU_LIMIT - totalAmount;
   const isNextMonthBudgetNegative = nextMonthBudget < 0;
 
@@ -248,6 +272,26 @@ export default function PendingDashboard({ snapshot, selectedMonth, availableMon
                 </div>
               </div>
             ))}
+            {/* 別カード（1205 など）: グレーアウト＋（除外済み）。合計には含まない */}
+            {excludedCardSummaries.map(summary => (
+              <div key={summary.cardLast4} className="rounded-xl bg-slate-100 px-3 py-3 opacity-50">
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <p className="text-xs text-slate-400">カード下4桁</p>
+                    <p className="text-base font-bold tabular-nums text-slate-500">
+                      {summary.cardLast4}
+                      <span className="ml-2 rounded-full bg-slate-200 px-2 py-0.5 text-[11px] font-semibold text-slate-500 align-middle">
+                        除外済み（別カード）
+                      </span>
+                    </p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-xs text-slate-400">{summary.count}件</p>
+                    <p className="text-base font-bold tabular-nums text-slate-400 line-through">{formatAmount(summary.amount)}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </section>
 
@@ -277,7 +321,7 @@ export default function PendingDashboard({ snapshot, selectedMonth, availableMon
           <div className="border-b border-slate-100 px-4 py-3">
             <h2 className="text-sm font-bold text-slate-900">{getMonthLabel(selectedMonth)} の未確定明細</h2>
             <p className="mt-1 text-xs text-slate-500 text-pretty">
-              すべての未確定決済を日付順に表示しています。
+              対象カード（下4桁 {PENDING_TARGET_CARD_LAST4}）の未確定決済を日付順に表示しています。別カードは除外中です。
             </p>
           </div>
           {loading ? (
