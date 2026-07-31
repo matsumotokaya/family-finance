@@ -10,7 +10,6 @@ import {
   parseSnapshotDate,
 } from '@/lib/pendingParse';
 import { getCardStatements } from '@/lib/dataSource';
-import { getSupabaseServer } from '@/lib/supabaseServer';
 
 export type { PendingTransaction, PendingSnapshot };
 export { parsePendingCardText, getPendingMonths } from '@/lib/pendingParse';
@@ -29,14 +28,22 @@ interface PendingRow {
   last_seen: string | null;
 }
 
+// supabase-js の PostgrestClient は本番(Vercel serverless)で select('*') 実行時に
+// 稀にエラーなしで空配列を返すことがあったため(未解明の断続的な不具合)、
+// このパスだけは PostgREST に直接 fetch する(常に安定して結果を返すことを確認済み)。
 async function loadSupabasePending(): Promise<{ transactions: PendingTransaction[]; latestSeen?: string }> {
-  const supabase = getSupabaseServer();
-  if (!supabase) return { transactions: [] };
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!url || !key) return { transactions: [] };
 
   try {
-    const { data, error } = await supabase.from('ff_pending_transactions').select('*');
-    console.log('[debug-pending] loadSupabasePending: data?.length =', data?.length, 'error =', error ? JSON.stringify(error) : null);
-    if (error || !data) return { transactions: [] };
+    const res = await fetch(`${url}/rest/v1/ff_pending_transactions?select=*`, {
+      headers: { apikey: key, Authorization: `Bearer ${key}` },
+      cache: 'no-store',
+    });
+    if (!res.ok) return { transactions: [] };
+    const data = await res.json().catch(() => null);
+    if (!Array.isArray(data)) return { transactions: [] };
 
     const rows = data as PendingRow[];
     const latestSeen = rows
@@ -117,17 +124,6 @@ export async function getLatestPendingSnapshot(): Promise<PendingSnapshot | null
   }
 
   const supabasePending = await loadSupabasePending();
-  console.log('[debug-pending] supabasePending.transactions.length =', supabasePending.transactions.length);
-  console.log('[debug-pending] confirmedSet.size =', confirmedSet.size);
-  let skippedConfirmed = 0;
-  let skippedDup = 0;
-  let added = 0;
-  for (const t of supabasePending.transactions) {
-    if (confirmedSet.has(`${t.date}-${t.merchant}-${t.amount}`)) { skippedConfirmed += 1; continue; }
-    if (allTransactionsMap.has(t.id)) { skippedDup += 1; continue; }
-    added += 1;
-  }
-  console.log('[debug-pending] added =', added, 'skippedConfirmed =', skippedConfirmed, 'skippedDup =', skippedDup);
   addTransactions(supabasePending.transactions);
 
   if (allTransactionsMap.size === 0 && candidates.length === 0) {
