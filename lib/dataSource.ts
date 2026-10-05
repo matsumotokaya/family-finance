@@ -23,14 +23,23 @@ interface BankRow {
 
 export async function getBankTransactions(): Promise<Transaction[]> {
   const jsonTransactions = transactionsData.transactions as Transaction[];
-  const supabase = getSupabaseServer();
-  if (!supabase) return jsonTransactions;
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!url || !key) return jsonTransactions;
 
   try {
-    const { data, error } = await supabase
-      .from('ff_bank_transactions')
-      .select('id, date, account, type, amount, description, category, note, balance_after');
-    if (error || !data) return jsonTransactions;
+    // Use the same uncached PostgREST path as pendingCardUtils: supabase-js
+    // has intermittently returned empty results on Vercel after ingestion.
+    const response = await fetch(
+      `${url}/rest/v1/ff_bank_transactions?select=id,date,account,type,amount,description,category,note,balance_after&order=date.asc,id.asc`,
+      {
+        headers: { apikey: key, Authorization: `Bearer ${key}` },
+        cache: 'no-store',
+      },
+    );
+    if (!response.ok) return jsonTransactions;
+    const data: unknown = await response.json();
+    if (!Array.isArray(data)) return jsonTransactions;
 
     const known = new Set(jsonTransactions.map(t => t.id));
     const extra: Transaction[] = (data as BankRow[])

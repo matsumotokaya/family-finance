@@ -30,6 +30,10 @@ When working in this project, do not call the AWS MCP or Supabase MCP.
 
 ## Latest Refresh Workflow
 
+For the monthly VIEW's NET family-card review and LINE draft workflow, read `docs/monthly-card-review.md`. Target Mirai's card ending 0406 and group by usage month, including early-month items that moved into confirmed billing statements. Read LINE history for context, then propose the draft in this Codex chat only. Do not type, paste, or send the draft in LINE; the user copies and sends it.
+
+For monthly bank screenshot updates via the website, follow the bank section in the same document. Import one bank at a time through `/ingest`, review extraction against the images, and verify `/YYYY-MM` after saving.
+
 When the user says `最新化してください`, `データを最新化してください`, or similar:
 
 1. Run `npm run refresh:latest`.
