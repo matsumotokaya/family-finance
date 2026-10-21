@@ -13,6 +13,8 @@ export interface PendingTransaction {
   foreignAmount?: number;
   exchangeRate?: number;
   sourceFile: string;
+  // Set when the row is in a confirmed card statement (payment month YYYYMM)
+  confirmedIn?: string;
 }
 
 export interface PendingSnapshot {

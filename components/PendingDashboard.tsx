@@ -140,6 +140,9 @@ export default function PendingDashboard({ snapshot, selectedMonth, availableMon
     [items, excludedIds]
   );
   const totalAmount = activeItems.reduce((sum, item) => sum + item.amount, 0);
+  const confirmedTotal = activeItems
+    .filter(item => item.raw.confirmedIn)
+    .reduce((sum, item) => sum + item.amount, 0);
   const excludedTotal = items
     .filter(item => excludedIds.has(item.id))
     .reduce((sum, item) => sum + item.amount, 0);
@@ -233,6 +236,9 @@ export default function PendingDashboard({ snapshot, selectedMonth, availableMon
           <div className="rounded-2xl bg-white p-4 shadow-sm">
             <p className="text-xs text-slate-500">{getMonthLabel(selectedMonth)} 合計</p>
             <p className="mt-1 text-2xl font-bold tabular-nums text-slate-900">{formatAmount(totalAmount)}</p>
+            <p className="mt-1 text-xs text-slate-500 tabular-nums">
+              確定 {formatAmount(confirmedTotal)}・未確定 {formatAmount(totalAmount - confirmedTotal)}
+            </p>
             {excludedCount > 0 && (
               <p className="mt-2 text-xs text-slate-500">
                 {excludedCount}件（¥{excludedTotal.toLocaleString()}）を除外中
@@ -312,9 +318,9 @@ export default function PendingDashboard({ snapshot, selectedMonth, availableMon
 
         <section className="rounded-2xl bg-white shadow-sm overflow-hidden">
           <div className="border-b border-slate-100 px-4 py-3">
-            <h2 className="text-sm font-bold text-slate-900">{getMonthLabel(selectedMonth)} の未確定明細</h2>
+            <h2 className="text-sm font-bold text-slate-900">{getMonthLabel(selectedMonth)} の利用明細</h2>
             <p className="mt-1 text-xs text-slate-500 text-pretty">
-              対象カード（下4桁 {PENDING_TARGET_CARD_LAST4}）の未確定決済を日付順に表示しています。別カードは除外中です。
+              対象カード（下4桁 {PENDING_TARGET_CARD_LAST4}）のこの月の利用を日付順に表示しています。確定明細に載ったものは「確定」、まだ載っていないものは「未確定」です。別カードは除外中です。
             </p>
           </div>
           {loading ? (
@@ -345,6 +351,15 @@ export default function PendingDashboard({ snapshot, selectedMonth, availableMon
                             {item.raw.cardLast4}
                           </span>
                           <span className="text-xs tabular-nums text-slate-500">{formatDate(item.raw.date)}</span>
+                          {item.raw.confirmedIn ? (
+                            <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-semibold text-slate-600">
+                              確定（{getMonthLabel(item.raw.confirmedIn)}支払）
+                            </span>
+                          ) : (
+                            <span className="rounded-full bg-blue-50 px-2 py-0.5 text-[11px] font-semibold text-blue-700">
+                              未確定
+                            </span>
+                          )}
                         </div>
                         <p className={`mt-1 text-sm font-semibold text-slate-900 text-pretty ${excluded ? 'line-through' : ''}`}>
                           {item.line1}

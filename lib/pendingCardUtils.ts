@@ -1,7 +1,9 @@
 // Server-side pending snapshot loader.
 // Sources: credit-card/未確定決済情報_* files (legacy paste files in git)
 //        + Supabase ff_pending_transactions (ingested via /ingest).
-// Rows already present in confirmed card statements are filtered out (消し込み).
+// Rows already present in confirmed card statements are marked confirmed (消し込み),
+// and Mirai's confirmed card rows that were never pasted are added, so every
+// usage month stays complete.
 
 import {
   PendingTransaction,
@@ -12,6 +14,9 @@ import {
 import { getCardStatements } from '@/lib/dataSource';
 
 export type { PendingTransaction, PendingSnapshot };
+
+// Mirai's VIEW family card; confirmed statements carry the person, not the card number
+const MIRAI_CARD_LAST4 = '0406';
 
 // The pending page and the confirmed CSV spell long vowels differently
 // (U+FF0D vs U+2212) and spaces vary, so compare merchants in a normalized form.
@@ -95,13 +100,26 @@ export async function getLatestPendingSnapshot(): Promise<PendingSnapshot | null
     // ファイルが読めない環境(将来のフルSupabase運用)でもSupabase分だけで動かす
   }
 
-  // 確定済みの取引をロードしてフィルタリングに使用する(JSON + Supabase の両方)
-  const confirmedSet = new Set<string>();
+  // Confirmed statement rows (JSON + Supabase), one queue entry per occurrence
+  // so two identical purchases on the same day are matched one to one.
+  const confirmedRows = new Map<string, Array<{ month: string; mirai: boolean; date: string; shop: string; amount: number; payType: string; file: string }>>();
   try {
     const statements = await getCardStatements();
     for (const statement of statements) {
       for (const t of statement.transactions) {
-        confirmedSet.add(reconcileKey(t.date, t.shop, t.amount));
+        if (t.net <= 0) continue;
+        const key = reconcileKey(t.date, t.shop, t.amount);
+        const queue = confirmedRows.get(key) ?? [];
+        queue.push({
+          month: statement.payment_yyyymm,
+          mirai: statement.card === 'view' && t.person.includes('未来'),
+          date: t.date.replace(/\//g, '-'),
+          shop: t.shop,
+          amount: t.amount,
+          payType: t.pay_type,
+          file: statement.file,
+        });
+        confirmedRows.set(key, queue);
       }
     }
   } catch (e) {
@@ -113,10 +131,9 @@ export async function getLatestPendingSnapshot(): Promise<PendingSnapshot | null
 
   const addTransactions = (transactions: PendingTransaction[]) => {
     for (const t of transactions) {
-      if (confirmedSet.has(reconcileKey(t.date, t.merchant, t.amount))) continue;
-      if (!allTransactionsMap.has(t.id)) {
-        allTransactionsMap.set(t.id, t);
-      }
+      if (allTransactionsMap.has(t.id)) continue;
+      const match = confirmedRows.get(reconcileKey(t.date, t.merchant, t.amount))?.shift();
+      allTransactionsMap.set(t.id, match ? { ...t, confirmedIn: match.month } : t);
     }
   };
 
@@ -129,6 +146,29 @@ export async function getLatestPendingSnapshot(): Promise<PendingSnapshot | null
 
   const supabasePending = await loadSupabasePending();
   addTransactions(supabasePending.transactions);
+
+  // Mirai's confirmed rows that never appeared as pending (e.g. early-month
+  // items that were confirmed before being pasted)
+  const occurrences = new Map<string, number>();
+  for (const queue of Array.from(confirmedRows.values())) {
+    for (const row of queue.filter(r => r.mirai)) {
+      const baseKey = `confirmed-${row.date}-${row.shop}-${row.amount}`;
+      const occurrence = occurrences.get(baseKey) ?? 0;
+      occurrences.set(baseKey, occurrence + 1);
+      const id = `${baseKey}-${occurrence}`;
+      allTransactionsMap.set(id, {
+        id,
+        date: row.date,
+        maskedCardNumber: '',
+        cardLast4: MIRAI_CARD_LAST4,
+        merchant: row.shop,
+        amount: row.amount,
+        paymentType: row.payType,
+        sourceFile: row.file,
+        confirmedIn: row.month,
+      });
+    }
+  }
 
   if (allTransactionsMap.size === 0 && candidates.length === 0) {
     return null;
