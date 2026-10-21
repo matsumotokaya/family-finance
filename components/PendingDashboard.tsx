@@ -1,8 +1,9 @@
 'use client';
 import { useEffect, useMemo, useState } from 'react';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import HamburgerMenu from './HamburgerMenu';
 import PageHeader from './PageHeader';
+import MonthSelector from './MonthSelector';
 import { PendingSnapshot, PendingTransaction } from '@/lib/pendingCardUtils';
 import { getMonthLabel, VIEW_CARD_MIKU_LIMIT } from '@/lib/cardUtils';
 import { supabase } from '@/lib/supabase';
@@ -68,6 +69,7 @@ function summarizeByCard(transactions: PendingTransaction[]) {
 }
 
 export default function PendingDashboard({ snapshot, selectedMonth, availableMonths }: Props) {
+  const router = useRouter();
   const [excludedIds, setExcludedIds] = useState<Set<string>>(new Set());
   const [comments, setComments] = useState<Record<string, DBComment[]>>({});
   const [openCommentId, setOpenCommentId] = useState<string | null>(null);
@@ -207,32 +209,23 @@ export default function PendingDashboard({ snapshot, selectedMonth, availableMon
 
   return (
     <div className="min-h-screen bg-slate-100">
-      <PageHeader>
-        <div className="flex items-center justify-between pt-1 pb-3">
-          <div>
-            <p className="text-xs text-white/60">ビューカード速報</p>
-            <h1 className="text-lg font-bold text-balance">未確定決済情報</h1>
-            <p className="mt-0.5 text-xs text-white/60">
-              {formatSnapshotDate(snapshot.snapshotDate)} 時点 / {snapshot.fileName}
+      <PageHeader noPadBottom>
+        <div className="flex items-center justify-between pb-3">
+          <div className="w-9" />
+          <div className="text-center">
+            <h1 className="text-sm font-medium opacity-70">未確定決済</h1>
+            <p className="text-xs text-white/50">
+              VIEWカード速報・{formatSnapshotDate(snapshot.snapshotDate)} 時点
             </p>
           </div>
           <HamburgerMenu />
         </div>
-        <div className="flex gap-1 overflow-x-auto pb-3">
-          {availableMonths.map(month => (
-            <Link
-              key={month}
-              href={`/pending/${month}`}
-              className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors whitespace-nowrap ${
-                month === selectedMonth
-                  ? 'bg-white text-slate-900'
-                  : 'text-white/70 hover:bg-white/10 hover:text-white'
-              }`}
-            >
-              {getMonthLabel(month)}
-            </Link>
-          ))}
-        </div>
+        <MonthSelector
+          options={[...availableMonths].reverse().map(month => ({ key: month, label: getMonthLabel(month) }))}
+          selectedKey={selectedMonth}
+          onSelect={month => router.push(`/pending/${month}`)}
+          note="利用月"
+        />
       </PageHeader>
 
       <main className="max-w-xl mx-auto px-4 py-4 space-y-4 pb-12">
