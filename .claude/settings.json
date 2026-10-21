@@ -1,0 +1,17 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/scripts/check-freshness.mjs\" --hook",
+            "timeout": 15,
+            "statusMessage": "家計データの更新状況を確認中"
+          }
+        ]
+      }
+    ]
+  }
+}
