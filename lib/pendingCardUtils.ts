@@ -12,6 +12,13 @@ import {
 import { getCardStatements } from '@/lib/dataSource';
 
 export type { PendingTransaction, PendingSnapshot };
+
+// The pending page and the confirmed CSV spell long vowels differently
+// (U+FF0D vs U+2212) and spaces vary, so compare merchants in a normalized form.
+function reconcileKey(date: string, merchant: string, amount: number): string {
+  const shop = merchant.replace(/[－−‐ｰ-]/g, 'ー').replace(/[\s　]/g, '');
+  return `${date.replace(/\//g, '-')}|${shop}|${amount}`;
+}
 export { parsePendingCardText, getPendingMonths } from '@/lib/pendingParse';
 
 interface PendingRow {
@@ -94,10 +101,7 @@ export async function getLatestPendingSnapshot(): Promise<PendingSnapshot | null
     const statements = await getCardStatements();
     for (const statement of statements) {
       for (const t of statement.transactions) {
-        // 比較用のキー: "YYYY-MM-DD-店舗名-金額"
-        // Note: 確定データは YYYY/MM/DD なので変換する
-        const date = t.date.replace(/\//g, '-');
-        confirmedSet.add(`${date}-${t.shop}-${t.amount}`);
+        confirmedSet.add(reconcileKey(t.date, t.shop, t.amount));
       }
     }
   } catch (e) {
@@ -109,7 +113,7 @@ export async function getLatestPendingSnapshot(): Promise<PendingSnapshot | null
 
   const addTransactions = (transactions: PendingTransaction[]) => {
     for (const t of transactions) {
-      if (confirmedSet.has(`${t.date}-${t.merchant}-${t.amount}`)) continue;
+      if (confirmedSet.has(reconcileKey(t.date, t.merchant, t.amount))) continue;
       if (!allTransactionsMap.has(t.id)) {
         allTransactionsMap.set(t.id, t);
       }
