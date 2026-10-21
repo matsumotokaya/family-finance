@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import HamburgerMenu from './HamburgerMenu';
 import PageHeader from './PageHeader';
@@ -58,6 +58,17 @@ function TabButton({ active, onClick, children }: { active: boolean; onClick: ()
 export default function IngestPage() {
   const [tab, setTab] = useState<Tab>('bank');
 
+  // A file dropped outside a drop zone would otherwise open in the browser and leave the page
+  useEffect(() => {
+    const block = (e: DragEvent) => e.preventDefault();
+    window.addEventListener('dragover', block);
+    window.addEventListener('drop', block);
+    return () => {
+      window.removeEventListener('dragover', block);
+      window.removeEventListener('drop', block);
+    };
+  }, []);
+
   return (
     <div className="min-h-screen bg-slate-100 pb-16">
       <PageHeader>
@@ -91,6 +102,67 @@ function Notice({ kind, children }: { kind: 'error' | 'success' | 'info'; childr
     info: 'bg-blue-50 text-blue-700 border-blue-200',
   };
   return <div className={`text-sm rounded-xl border px-4 py-3 ${styles[kind]}`}>{children}</div>;
+}
+
+// ---- Shared file picker: multi-select and drag & drop ----
+function mergeFiles(prev: File[], added: File[]): File[] {
+  // Adding a file with the same name again keeps one entry
+  return [...prev.filter(p => !added.some(a => a.name === p.name)), ...added];
+}
+
+function FileDropZone({ accept, accepts, emptyText, unit, files, onAdd, onRemove, disabled }: {
+  accept: string;
+  accepts: (file: File) => boolean;
+  emptyText: string;
+  unit: string;
+  files: File[];
+  onAdd: (files: File[]) => void;
+  onRemove: (name: string) => void;
+  disabled?: boolean;
+}) {
+  const [dragging, setDragging] = useState(false);
+  const add = (list: FileList | null) => {
+    const picked = Array.from(list ?? []).filter(accepts);
+    if (picked.length > 0) onAdd(picked);
+  };
+
+  return (
+    <div className="space-y-2">
+      <label
+        onDragOver={e => { e.preventDefault(); setDragging(true); }}
+        onDragLeave={() => setDragging(false)}
+        onDrop={e => { e.preventDefault(); setDragging(false); if (!disabled) add(e.dataTransfer.files); }}
+        className={`block rounded-2xl border-2 border-dashed p-6 text-center cursor-pointer transition-colors ${
+          dragging ? 'border-slate-900 bg-slate-50' : 'border-slate-300 bg-white'
+        }`}
+      >
+        <input
+          type="file"
+          accept={accept}
+          multiple
+          disabled={disabled}
+          className="hidden"
+          onChange={e => { add(e.target.files); e.target.value = ''; }}
+        />
+        <span className="text-slate-500 text-sm">
+          {files.length > 0 ? `${files.length}${unit}を選択中（追加もできます）` : emptyText}
+        </span>
+      </label>
+
+      {files.length > 0 && (
+        <ul className="bg-white rounded-2xl divide-y text-sm">
+          {files.map(f => (
+            <li key={f.name} className="px-4 py-2 flex items-center justify-between gap-3">
+              <span className="truncate">{f.name}</span>
+              <button onClick={() => onRemove(f.name)} disabled={disabled} className="text-xs text-slate-400 shrink-0">
+                外す
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
 }
 
 // ---- Bank screenshot panel ----
@@ -150,18 +222,16 @@ function BankPanel() {
         MUFG・りそなアプリの入出金明細をスクショして、そのまま添付してください。AIが読み取り、残高の連鎖を検算してから確定できます。
       </p>
 
-      <label className="block bg-white rounded-2xl border-2 border-dashed border-slate-300 p-6 text-center cursor-pointer">
-        <input
-          type="file"
-          accept="image/*"
-          multiple
-          className="hidden"
-          onChange={e => setFiles(Array.from(e.target.files ?? []))}
-        />
-        <span className="text-slate-500 text-sm">
-          {files.length > 0 ? `${files.length}枚を選択中` : 'タップして画像を選択（複数可）'}
-        </span>
-      </label>
+      <FileDropZone
+        accept="image/*"
+        accepts={f => f.type.startsWith('image/')}
+        emptyText="画像をここにドロップ、またはタップして選択（複数可）"
+        unit="枚"
+        files={files}
+        onAdd={added => { setFiles(prev => mergeFiles(prev, added)); setReport(null); setSaved(false); }}
+        onRemove={name => setFiles(prev => prev.filter(p => p.name !== name))}
+        disabled={loading || committing}
+      />
 
       <button
         onClick={runExtract}
@@ -331,16 +401,8 @@ interface CardUploadResult {
 
 function CardsPanel() {
   const [files, setFiles] = useState<File[]>([]);
-  const [dragging, setDragging] = useState(false);
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState<CardUploadResult[]>([]);
-
-  function addFiles(list: FileList | null) {
-    const csvs = Array.from(list ?? []).filter(f => f.name.toLowerCase().endsWith('.csv'));
-    // Picking the same file twice keeps one entry
-    setFiles(prev => [...prev.filter(p => !csvs.some(c => c.name === p.name)), ...csvs]);
-    setResults([]);
-  }
 
   // Upload one file per request so a bad file does not block the others
   async function submit() {
@@ -374,42 +436,16 @@ function CardsPanel() {
         VIEW&apos;s NET でダウンロードした確定明細CSV（Shift-JIS）をアップロードしてください。複数まとめて選択・ドロップできます。カードは自動判別します。
       </p>
 
-      <label
-        onDragOver={e => { e.preventDefault(); setDragging(true); }}
-        onDragLeave={() => setDragging(false)}
-        onDrop={e => { e.preventDefault(); setDragging(false); addFiles(e.dataTransfer.files); }}
-        className={`block rounded-2xl border-2 border-dashed p-6 text-center cursor-pointer transition-colors ${
-          dragging ? 'border-slate-900 bg-slate-50' : 'border-slate-300 bg-white'
-        }`}
-      >
-        <input
-          type="file"
-          accept=".csv"
-          multiple
-          className="hidden"
-          onChange={e => { addFiles(e.target.files); e.target.value = ''; }}
-        />
-        <span className="text-slate-500 text-sm">
-          {files.length > 0 ? `${files.length}件のCSVを選択中（追加もできます）` : 'CSVをここにドロップ、またはタップして選択（複数可）'}
-        </span>
-      </label>
-
-      {files.length > 0 && (
-        <ul className="bg-white rounded-2xl divide-y text-sm">
-          {files.map(f => (
-            <li key={f.name} className="px-4 py-2 flex items-center justify-between gap-3">
-              <span className="truncate">{f.name}</span>
-              <button
-                onClick={() => setFiles(prev => prev.filter(p => p.name !== f.name))}
-                disabled={loading}
-                className="text-xs text-slate-400 shrink-0"
-              >
-                外す
-              </button>
-            </li>
-          ))}
-        </ul>
-      )}
+      <FileDropZone
+        accept=".csv"
+        accepts={f => f.name.toLowerCase().endsWith('.csv')}
+        emptyText="CSVをここにドロップ、またはタップして選択（複数可）"
+        unit="件のCSV"
+        files={files}
+        onAdd={added => { setFiles(prev => mergeFiles(prev, added)); setResults([]); }}
+        onRemove={name => setFiles(prev => prev.filter(p => p.name !== name))}
+        disabled={loading}
+      />
 
       <button
         onClick={submit}
