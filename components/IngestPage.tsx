@@ -318,62 +318,129 @@ function PendingPanel() {
 }
 
 // ---- Card CSV panel ----
-function CardsPanel() {
-  const [file, setFile] = useState<File | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<{ card_label: string; payment_yyyymm: string; total: number; transactionCount: number; replaced: boolean } | null>(null);
-  const [error, setError] = useState('');
+interface CardUploadResult {
+  file: string;
+  ok: boolean;
+  card_label?: string;
+  payment_yyyymm?: string;
+  total?: number;
+  transactionCount?: number;
+  replaced?: boolean;
+  error?: string;
+}
 
-  async function submit() {
-    if (!file) return;
-    setLoading(true);
-    setError('');
-    setResult(null);
-    try {
-      const fd = new FormData();
-      fd.append('file', file);
-      const res = await fetch('/api/ingest/cards', { method: 'POST', body: fd });
-      const json = await res.json();
-      if (!res.ok) throw new Error(json.error || '取り込みに失敗しました');
-      setResult(json);
-      setFile(null);
-    } catch (e) {
-      setError(e instanceof Error ? e.message : String(e));
-    } finally {
-      setLoading(false);
-    }
+function CardsPanel() {
+  const [files, setFiles] = useState<File[]>([]);
+  const [dragging, setDragging] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [results, setResults] = useState<CardUploadResult[]>([]);
+
+  function addFiles(list: FileList | null) {
+    const csvs = Array.from(list ?? []).filter(f => f.name.toLowerCase().endsWith('.csv'));
+    // Picking the same file twice keeps one entry
+    setFiles(prev => [...prev.filter(p => !csvs.some(c => c.name === p.name)), ...csvs]);
+    setResults([]);
   }
+
+  // Upload one file per request so a bad file does not block the others
+  async function submit() {
+    if (files.length === 0) return;
+    setLoading(true);
+    setResults([]);
+    for (const file of files) {
+      let result: CardUploadResult;
+      try {
+        const fd = new FormData();
+        fd.append('file', file);
+        const res = await fetch('/api/ingest/cards', { method: 'POST', body: fd });
+        const json = await res.json();
+        result = res.ok
+          ? { ...json, file: file.name, ok: true }
+          : { file: file.name, ok: false, error: json.error || '取り込みに失敗しました' };
+      } catch (e) {
+        result = { file: file.name, ok: false, error: e instanceof Error ? e.message : String(e) };
+      }
+      setResults(prev => [...prev, result]);
+    }
+    setFiles([]);
+    setLoading(false);
+  }
+
+  const failed = results.filter(r => !r.ok).length;
 
   return (
     <div className="space-y-4">
       <p className="text-sm text-slate-600">
-        VIEW&apos;s NET でダウンロードした確定明細CSV（Shift-JIS）をアップロードしてください。カードは自動判別します。
+        VIEW&apos;s NET でダウンロードした確定明細CSV（Shift-JIS）をアップロードしてください。複数まとめて選択・ドロップできます。カードは自動判別します。
       </p>
 
-      <label className="block bg-white rounded-2xl border-2 border-dashed border-slate-300 p-6 text-center cursor-pointer">
+      <label
+        onDragOver={e => { e.preventDefault(); setDragging(true); }}
+        onDragLeave={() => setDragging(false)}
+        onDrop={e => { e.preventDefault(); setDragging(false); addFiles(e.dataTransfer.files); }}
+        className={`block rounded-2xl border-2 border-dashed p-6 text-center cursor-pointer transition-colors ${
+          dragging ? 'border-slate-900 bg-slate-50' : 'border-slate-300 bg-white'
+        }`}
+      >
         <input
           type="file"
           accept=".csv"
+          multiple
           className="hidden"
-          onChange={e => setFile(e.target.files?.[0] ?? null)}
+          onChange={e => { addFiles(e.target.files); e.target.value = ''; }}
         />
-        <span className="text-slate-500 text-sm">{file ? file.name : 'タップしてCSVを選択'}</span>
+        <span className="text-slate-500 text-sm">
+          {files.length > 0 ? `${files.length}件のCSVを選択中（追加もできます）` : 'CSVをここにドロップ、またはタップして選択（複数可）'}
+        </span>
       </label>
+
+      {files.length > 0 && (
+        <ul className="bg-white rounded-2xl divide-y text-sm">
+          {files.map(f => (
+            <li key={f.name} className="px-4 py-2 flex items-center justify-between gap-3">
+              <span className="truncate">{f.name}</span>
+              <button
+                onClick={() => setFiles(prev => prev.filter(p => p.name !== f.name))}
+                disabled={loading}
+                className="text-xs text-slate-400 shrink-0"
+              >
+                外す
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
 
       <button
         onClick={submit}
-        disabled={!file || loading}
+        disabled={files.length === 0 || loading}
         className="w-full py-3 rounded-xl bg-slate-900 text-white font-bold disabled:opacity-40"
       >
-        {loading ? '取り込み中…' : '取り込む'}
+        {loading ? `取り込み中…（${results.length}/${files.length}）` : files.length > 0 ? `${files.length}件を取り込む` : '取り込む'}
       </button>
 
-      {error && <Notice kind="error">{error}</Notice>}
-      {result && (
-        <Notice kind="success">
-          <b>{result.card_label}</b>（{result.payment_yyyymm}）を取り込みました。{result.transactionCount}件 / 請求 {formatCurrency(result.total)}
-          {result.replaced && '（既存を差し替え）'}
+      {results.length > 0 && !loading && (
+        <Notice kind={failed > 0 ? 'error' : 'success'}>
+          {results.length}件中 {results.length - failed}件を取り込みました
+          {failed > 0 && `（${failed}件は失敗）`}
         </Notice>
+      )}
+      {results.length > 0 && (
+        <ul className="bg-white rounded-2xl divide-y text-sm">
+          {results.map(r => (
+            <li key={r.file} className="px-4 py-2.5">
+              <div className="text-xs text-slate-400 truncate">{r.file}</div>
+              {r.ok ? (
+                <div>
+                  ✅ <b>{r.card_label}</b>（{r.payment_yyyymm}）{r.transactionCount}件 / 請求 {formatCurrency(r.total ?? 0)}
+                  {r.replaced && '（既存を差し替え）'}
+                </div>
+              ) : (
+                <div className="text-red-600">⚠️ {r.error}</div>
+              )}
+            </li>
+          ))}
+        </ul>
       )}
     </div>
   );
