@@ -12,6 +12,7 @@ import {
 } from 'recharts';
 import HamburgerMenu from './HamburgerMenu';
 import PageHeader from './PageHeader';
+import MonthSelector from './MonthSelector';
 
 function fmt(n: number) { return `¥${n.toLocaleString('ja-JP')}`; }
 function fmtK(n: number) { return n >= 10000 ? `${Math.round(n / 1000)}k` : `${n}`; }
@@ -46,34 +47,24 @@ export default function CardDashboard({ statements }: Props) {
   return (
     <div className="min-h-screen bg-slate-100">
       {/* Header */}
-      <PageHeader>
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-lg font-black">カード明細分析</h1>
-            <p className="text-xs text-white/60 mt-0.5">VIEWカード（未来）・ルミネカード（夏弥）</p>
+      <PageHeader noPadBottom>
+        <div className="flex items-center justify-between pb-3">
+          <div className="w-9" />
+          <div className="text-center">
+            <h1 className="text-sm font-medium opacity-70">カード明細分析</h1>
+            <p className="text-xs text-white/50">VIEWカード（未来）・ルミネカード（夏弥）</p>
           </div>
           <HamburgerMenu />
         </div>
+        <MonthSelector
+          options={summaries.map(s => ({ key: s.yyyymm, label: getMonthLabel(s.yyyymm) }))}
+          selectedKey={selectedMonth}
+          onSelect={setSelectedMonth}
+          note="支払月"
+        />
       </PageHeader>
 
       <main className="max-w-xl mx-auto px-4 py-4 space-y-3 pb-12">
-
-        {/* Month selector */}
-        <div className="flex gap-2 overflow-x-auto pb-1">
-          {summaries.map(s => (
-            <button
-              key={s.yyyymm}
-              onClick={() => setSelectedMonth(s.yyyymm)}
-              className={`px-3 py-1.5 rounded-xl text-sm font-bold whitespace-nowrap flex-shrink-0 transition-colors ${
-                selectedMonth === s.yyyymm
-                  ? 'bg-slate-900 text-white'
-                  : 'bg-white text-slate-600 shadow-sm'
-              }`}
-            >
-              {s.label}
-            </button>
-          ))}
-        </div>
 
         {/* ViewCard 未来 — MAIN ALERT */}
         <div className={`rounded-2xl p-4 shadow-sm ${isOver ? 'bg-red-600 text-white' : 'bg-emerald-50 border border-emerald-200'}`}>
