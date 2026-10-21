@@ -33,8 +33,10 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: `原本の記録に失敗: ${sourceError.message}` }, { status: 500 });
   }
 
+  // Build ids from the account chosen on the review screen, not the AI's guess
+  // that the draft ids were made with.
   const rows = transactions.map((t, index) => ({
-    id: t.id ?? `${account}-${t.date}-${index + 1}`,
+    id: `${account}-${t.date}-${index + 1}`,
     date: t.date,
     account,
     type: t.type,

@@ -33,6 +33,9 @@ const ACCOUNT_LABELS: Record<string, string> = {
   yucho_son: 'ゆうちょ（息子）',
 };
 
+// Banks the user can pick on the review screen; the AI's guess is only the default.
+const BANK_CHOICES = ['mufg', 'resona'];
+
 const TYPE_LABELS: Record<string, string> = {
   income: '入金',
   expense: '出金',
@@ -95,6 +98,7 @@ function BankPanel() {
   const [files, setFiles] = useState<File[]>([]);
   const [loading, setLoading] = useState(false);
   const [report, setReport] = useState<VerifyReport | null>(null);
+  const [account, setAccount] = useState('');
   const [error, setError] = useState('');
   const [saved, setSaved] = useState(false);
   const [committing, setCommitting] = useState(false);
@@ -112,6 +116,7 @@ function BankPanel() {
       const json = await res.json();
       if (!res.ok) throw new Error(json.error || '抽出に失敗しました');
       setReport(json as VerifyReport);
+      setAccount(BANK_CHOICES.includes(json.account) ? json.account : '');
     } catch (e) {
       setError(e instanceof Error ? e.message : String(e));
     } finally {
@@ -120,14 +125,14 @@ function BankPanel() {
   }
 
   async function commit() {
-    if (!report) return;
+    if (!report || !account) return;
     setCommitting(true);
     setError('');
     try {
       const res = await fetch('/api/ingest/bank/commit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ account: report.account, transactions: report.transactions }),
+        body: JSON.stringify({ account, transactions: report.transactions }),
       });
       const json = await res.json();
       if (!res.ok) throw new Error(json.error || '保存に失敗しました');
@@ -170,8 +175,35 @@ function BankPanel() {
 
       {report && (
         <div className="space-y-3">
+          <div className="bg-white rounded-2xl px-4 py-3">
+            <p className="text-xs font-bold text-slate-500">
+              銀行（AIの判定: {ACCOUNT_LABELS[report.account] ?? report.account}）。違っていたら選び直してください
+            </p>
+            <div className="flex gap-2 mt-2">
+              {BANK_CHOICES.map(key => (
+                <label
+                  key={key}
+                  className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl border-2 text-sm font-bold cursor-pointer ${
+                    account === key ? 'border-slate-900 bg-slate-900 text-white' : 'border-slate-200 text-slate-600'
+                  } ${saved ? 'opacity-60 cursor-not-allowed' : ''}`}
+                >
+                  <input
+                    type="radio"
+                    name="bank-account"
+                    value={key}
+                    checked={account === key}
+                    disabled={saved}
+                    onChange={() => setAccount(key)}
+                    className="sr-only"
+                  />
+                  {ACCOUNT_LABELS[key]}
+                </label>
+              ))}
+            </div>
+          </div>
+
           <Notice kind={report.chainConsistent ? 'success' : 'info'}>
-            口座: <b>{ACCOUNT_LABELS[report.account] ?? report.account}</b> / {report.transactions.length}件
+            {report.transactions.length}件
             {report.chainConsistent ? ' — 残高チェックOK ✅' : ' — 残高が合わない行があります ⚠️'}
           </Notice>
 
@@ -212,10 +244,10 @@ function BankPanel() {
           ) : (
             <button
               onClick={commit}
-              disabled={committing}
+              disabled={committing || !account}
               className="w-full py-3 rounded-xl bg-green-600 text-white font-bold disabled:opacity-40"
             >
-              {committing ? '保存中…' : 'この内容で確定して保存'}
+              {committing ? '保存中…' : `${ACCOUNT_LABELS[account] ?? '銀行を選択して'}として確定して保存`}
             </button>
           )}
         </div>
