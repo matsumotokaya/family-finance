@@ -41,7 +41,7 @@ export default function HamburgerMenu() {
       <div className={`fixed top-0 right-0 h-full w-64 z-50 bg-white shadow-2xl transform transition-transform duration-300 ${open ? 'translate-x-0' : 'translate-x-full'}`}>
         <div className="bg-slate-900 px-5 pt-6 pb-5">
           <div className="flex items-center justify-between">
-            <p className="text-white font-bold text-sm">松本家の家計簿</p>
+            <Link href="/" onClick={() => setOpen(false)} className="text-white font-bold text-sm">松本家の家計簿</Link>
             <button
               onClick={() => setOpen(false)}
               className="text-white/70 text-xl leading-none"

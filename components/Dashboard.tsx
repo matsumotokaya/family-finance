@@ -28,10 +28,11 @@ export default function Dashboard({ transactions, config, selectedMonthKey }: Pr
 
   const { year, month } = availableMonths[selectedIndex];
   const stats = useMemo(
-    () => getMonthlyStats(transactions, year, month, config.incompleteMonths, config.standardMonthlyIncome),
-    [transactions, year, month, config.incompleteMonths, config.standardMonthlyIncome]
+    () => getMonthlyStats(transactions, year, month, config.incompleteMonths),
+    [transactions, year, month, config.incompleteMonths]
   );
-  const isDeficit = stats.netBalance < 0;
+  // Only judge a deficit once the month has closed
+  const isDeficit = !stats.isIncomplete && stats.netBalance < 0;
   const prevHref = selectedIndex > 0 ? `/${monthKeys[selectedIndex - 1]}` : null;
   const nextHref = selectedIndex < availableMonths.length - 1 ? `/${monthKeys[selectedIndex + 1]}` : null;
 
@@ -41,7 +42,7 @@ export default function Dashboard({ transactions, config, selectedMonthKey }: Pr
       <PageHeader isAlert={isDeficit} noPadBottom>
         <div className="flex items-center justify-between pb-3">
           <div className="w-9" />
-          <h1 className="text-sm font-medium opacity-70">{config.familyName}の家計簿</h1>
+          <h1 className="text-sm font-medium opacity-70"><Link href="/">{config.familyName}の家計簿</Link></h1>
           <HamburgerMenu />
         </div>
         {/* Month selector */}
@@ -87,7 +88,7 @@ export default function Dashboard({ transactions, config, selectedMonthKey }: Pr
         {isDeficit && (
           <div className="bg-red-600 text-white rounded-2xl p-5 text-center shadow-lg">
             <p className="text-4xl font-black">⚠️</p>
-            <p className="text-2xl font-black mt-1">今月は赤字です</p>
+            <p className="text-2xl font-black mt-1">{getMonthLabel(year, month)}は赤字でした</p>
             <p className="text-lg font-bold mt-1">
               収入 ¥{stats.totalIncome.toLocaleString()} / 支出 ¥{stats.totalExpense.toLocaleString()}
             </p>

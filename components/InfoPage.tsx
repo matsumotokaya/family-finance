@@ -1,10 +1,7 @@
 'use client';
 import Link from 'next/link';
-import { AppConfig, Transaction } from '@/types';
-import {
-  getAvailableMonths, getMonthlyStats, formatCurrency, monthsUntil,
-} from '@/lib/dataUtils';
-import SavingsGoal from './SavingsGoal';
+import { AppConfig } from '@/types';
+import { formatCurrency, monthsUntil } from '@/lib/dataUtils';
 import HamburgerMenu from './HamburgerMenu';
 import PageHeader from './PageHeader';
 
@@ -12,18 +9,9 @@ const MONTHLY_HOUSING_LOAN = 115410;
 
 interface Props {
   config: AppConfig;
-  transactions: Transaction[];
 }
 
-export default function InfoPage({ config, transactions }: Props) {
-  // Use latest available month for savings goal
-  const months = getAvailableMonths(transactions);
-  const latest = months[months.length - 1];
-  const stats = getMonthlyStats(
-    transactions, latest.year, latest.month,
-    config.incompleteMonths, config.standardMonthlyIncome
-  );
-
+export default function InfoPage({ config }: Props) {
   const remaining = monthsUntil(config.mortgageEndYear, config.mortgageEndMonth);
   const years = Math.floor(remaining / 12);
   const mos = remaining % 12;
@@ -34,7 +22,7 @@ export default function InfoPage({ config, transactions }: Props) {
       <PageHeader>
         <div className="flex items-center justify-between">
           <div className="w-9" />
-          <h1 className="text-sm font-medium opacity-70">松本家の家計簿</h1>
+          <h1 className="text-sm font-medium opacity-70"><Link href="/">松本家の家計簿</Link></h1>
           <HamburgerMenu />
         </div>
         <p className="text-xl font-black mt-2 pb-1">その他・設定情報</p>
@@ -79,12 +67,6 @@ export default function InfoPage({ config, transactions }: Props) {
           </div>
         </div>
 
-        {/* Savings goal */}
-        <div>
-          <h2 className="text-xs font-bold text-slate-500 px-1 mb-2">月次貯蓄目標</h2>
-          <SavingsGoal stats={stats} config={config} />
-        </div>
-
         {/* Mortgage countdown */}
         <div>
           <h2 className="text-xs font-bold text-slate-500 px-1 mb-2">住宅ローン減税</h2>
@@ -124,7 +106,6 @@ export default function InfoPage({ config, transactions }: Props) {
           <h2 className="text-sm font-black text-slate-800 mb-3">現在の設定値</h2>
           <dl className="space-y-2 text-sm">
             {[
-              ['月次貯蓄目標', formatCurrency(config.monthlyTargetSavings)],
               ['VIEWカード（未来）上限', formatCurrency(40000)],
               ['住宅ローン減税 終了予定', `${config.mortgageEndYear}年${config.mortgageEndMonth}月`],
             ].map(([label, value]) => (
@@ -135,6 +116,17 @@ export default function InfoPage({ config, transactions }: Props) {
             ))}
           </dl>
           <p className="text-xs text-slate-400 mt-3">設定変更は data/config.json を編集してください</p>
+        </div>
+
+        {/* Fixed costs memo */}
+        <div className="bg-white rounded-2xl p-5 shadow-sm">
+          <h2 className="text-sm font-black text-slate-800 mb-1">固定費メモ</h2>
+          <p className="text-xs text-slate-500 leading-relaxed">
+            サブスク・定額払いを月額に換算した見直し用の試算です（実際の明細ではありません）。
+          </p>
+          <Link href="/fixed-costs" className="inline-block mt-2 text-xs font-bold text-blue-600">
+            固定費メモを見る →
+          </Link>
         </div>
 
       </main>

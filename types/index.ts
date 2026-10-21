@@ -28,8 +28,6 @@ export interface Transaction {
 
 export interface AppConfig {
   familyName: string;
-  monthlyTargetSavings: number;
-  standardMonthlyIncome: number; // 見込み給与（基準値）
   mortgageEndYear: number;
   mortgageEndMonth: number;
   incompleteMonths: string[]; // "YYYY-MM" format
@@ -41,7 +39,6 @@ export interface MonthlyStats {
   totalIncome: number;
   totalExpense: number;
   netBalance: number;          // 確定収支: 実際の収入 − 支出
-  projectedNetBalance: number; // 見込み収支: 標準収入 − 支出
   transactions: Transaction[];
   isIncomplete: boolean;
 }

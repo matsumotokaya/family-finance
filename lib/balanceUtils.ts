@@ -2,49 +2,32 @@ import { Transaction } from '@/types';
 
 export interface BalancePoint {
   date: string;       // YYYY-MM-DD
-  label: string;      // "12/1" 表示用
+  label: string;      // "2025/12/1" for display
   mufg: number | null;
   resona: number | null;
-  total: number | null;
+  total: number | null; // only when both balances are known
   event?: string;     // 取引の説明（ツールチップ用）
 }
 
-// Initial balances (day before first transaction, from screenshots)
-const INITIAL = {
-  mufg:   1984267,   // 2025-11-30 time point
-  resona:  370333,   // 2025-11-30 time point
-};
+// Resona statements lack balances for some periods, so start from a balance confirmed on a screenshot
+const RESONA_ANCHOR = { date: '2025-11-30', balance: 370333 };
 
 function toLabel(date: string): string {
-  const d = new Date(date);
-  return `${d.getMonth() + 1}/${d.getDate()}`;
+  const [y, m, d] = date.split('-').map(Number);
+  return `${y}/${m}/${d}`;
 }
 
 export function buildBalanceSeries(transactions: Transaction[]): BalancePoint[] {
   // Filter to MUFG and Resona with balance_after only
   const relevant = transactions
     .filter(t => (t.account === 'mufg' || t.account === 'resona') && t.balance_after != null)
-    .sort((a, b) => a.date.localeCompare(b.date) || a.id.localeCompare(b.id));
+    .sort((a, b) => a.date.localeCompare(b.date) || a.id.localeCompare(b.id, undefined, { numeric: true }));
 
   if (relevant.length === 0) return [];
 
-  // Track last known balance per account
-  let mufg = INITIAL.mufg;
-  let resona = INITIAL.resona;
-
-  // Start point
-  const points: BalancePoint[] = [
-    {
-      date: '2025-11-30',
-      label: '11/30',
-      mufg,
-      resona,
-      total: mufg + resona,
-    },
-  ];
-
   // Group by date (take last balance of each account per date)
   const byDate = new Map<string, { mufg?: number; resona?: number; events: string[] }>();
+  byDate.set(RESONA_ANCHOR.date, { resona: RESONA_ANCHOR.balance, events: [] });
 
   for (const t of relevant) {
     const entry = byDate.get(t.date) || { events: [] };
@@ -59,6 +42,11 @@ export function buildBalanceSeries(transactions: Transaction[]): BalancePoint[] 
     byDate.set(t.date, entry);
   }
 
+  // Each account's line starts at its first known balance
+  let mufg: number | null = null;
+  let resona: number | null = null;
+  const points: BalancePoint[] = [];
+
   for (const [date, data] of Array.from(byDate.entries()).sort()) {
     if (data.mufg != null) mufg = data.mufg;
     if (data.resona != null) resona = data.resona;
@@ -67,7 +55,7 @@ export function buildBalanceSeries(transactions: Transaction[]): BalancePoint[] 
       label: toLabel(date),
       mufg,
       resona,
-      total: mufg + resona,
+      total: mufg != null && resona != null ? mufg + resona : null,
       event: data.events.join(' / ') || undefined,
     });
   }

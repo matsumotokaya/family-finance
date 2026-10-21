@@ -42,8 +42,7 @@ export function getMonthlyStats(
   transactions: Transaction[],
   year: number,
   month: number,
-  incompleteMonths: string[],
-  standardMonthlyIncome: number = 500000
+  incompleteMonths: string[]
 ): MonthlyStats {
   const key = `${year}-${String(month).padStart(2, '0')}`;
   const monthTxs = transactions.filter(t => {
@@ -57,19 +56,25 @@ export function getMonthlyStats(
     year, month,
     totalIncome, totalExpense,
     netBalance: totalIncome - totalExpense,
-    projectedNetBalance: standardMonthlyIncome - totalExpense,
     transactions: monthTxs,
-    isIncomplete: incompleteMonths.includes(key),
+    isIncomplete: incompleteMonths.includes(key) || !isMonthEnded(year, month),
   };
+}
+
+// A month is not final until it has ended (JST)
+function isMonthEnded(year: number, month: number): boolean {
+  const jst = new Date(Date.now() + 9 * 60 * 60 * 1000);
+  const currentYear = jst.getUTCFullYear();
+  const currentMonth = jst.getUTCMonth() + 1;
+  return year < currentYear || (year === currentYear && month < currentMonth);
 }
 
 export function getAllMonthlyStats(
   transactions: Transaction[],
-  incompleteMonths: string[],
-  standardMonthlyIncome: number = 500000
+  incompleteMonths: string[]
 ): MonthlyStats[] {
   return getAvailableMonths(transactions).map(({ year, month }) =>
-    getMonthlyStats(transactions, year, month, incompleteMonths, standardMonthlyIncome)
+    getMonthlyStats(transactions, year, month, incompleteMonths)
   );
 }
 

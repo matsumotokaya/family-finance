@@ -41,9 +41,15 @@ export async function getBankTransactions(): Promise<Transaction[]> {
     const data: unknown = await response.json();
     if (!Array.isArray(data)) return jsonTransactions;
 
+    // JSON is authoritative for each account up to its latest date (e.g. the
+    // MUFG CSV import), so Supabase rows inside that range are superseded.
+    const jsonLatest = new Map<string, string>();
+    for (const t of jsonTransactions) {
+      if (t.date > (jsonLatest.get(t.account) ?? '')) jsonLatest.set(t.account, t.date);
+    }
     const known = new Set(jsonTransactions.map(t => t.id));
     const extra: Transaction[] = (data as BankRow[])
-      .filter(row => !known.has(row.id))
+      .filter(row => !known.has(row.id) && row.date > (jsonLatest.get(row.account) ?? ''))
       .map(row => ({
         id: row.id,
         date: row.date,

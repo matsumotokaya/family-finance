@@ -7,6 +7,10 @@ import { Transaction } from '@/types';
 import { buildBalanceSeries, BalancePoint } from '@/lib/balanceUtils';
 import { useMemo } from 'react';
 
+const MUFG_COLOR = '#ef4444';
+const RESONA_COLOR = '#22c55e';
+const TOTAL_COLOR = '#0f172a';
+
 function fmt(v: number) {
   if (v >= 1000000) return `${(v / 10000).toFixed(0)}万`;
   if (v >= 10000)   return `${Math.round(v / 10000)}万`;
@@ -23,7 +27,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   return (
     <div className="bg-white border border-slate-200 rounded-xl shadow-lg p-3 text-xs min-w-40">
       <p className="font-bold text-slate-700 mb-2">{label}</p>
-      {payload.map((p: any) => (
+      {payload.filter((p: any) => p.value != null).map((p: any) => (
         <div key={p.dataKey} className="flex justify-between gap-4 mb-0.5">
           <span style={{ color: p.color }}>{p.name}</span>
           <span className="font-bold">{fmtFull(p.value)}</span>
@@ -41,16 +45,22 @@ export default function BalanceChart({ transactions }: { transactions: Transacti
 
   if (data.length === 0) return null;
 
-  const allValues = data.flatMap(d => [d.mufg ?? 0, d.resona ?? 0, d.total ?? 0]);
+  const allValues = data
+    .flatMap(d => [d.mufg, d.resona, d.total])
+    .filter((v): v is number => v != null);
   const minVal = Math.min(...allValues);
   const maxVal = Math.max(...allValues);
   const yMin = Math.floor(minVal / 100000) * 100000;
   const yMax = Math.ceil(maxVal / 100000) * 100000;
+  const [startYear, startMonth] = data[0].date.split('-').map(Number);
+  const latest = data[data.length - 1];
 
   return (
     <div className="bg-white rounded-2xl p-4 pb-6 shadow-sm">
       <h2 className="text-sm font-bold text-slate-700 mb-0.5">口座残高の推移</h2>
-      <p className="text-xs text-slate-400 mb-4">2025年12月〜現在（三菱UFJ ＋ りそな）</p>
+      <p className="text-xs text-slate-400 mb-4">
+        {startYear}年{startMonth}月〜現在（三菱UFJ ＋ りそな）
+      </p>
 
       <ResponsiveContainer width="100%" height={240}>
         <ComposedChart data={data} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
@@ -58,7 +68,12 @@ export default function BalanceChart({ transactions }: { transactions: Transacti
           <XAxis
             dataKey="label"
             tick={{ fontSize: 10, fill: '#94a3b8' }}
+            tickFormatter={(label: string) => {
+              const [y, m] = label.split('/');
+              return `${y.slice(2)}/${m}`;
+            }}
             interval="preserveStartEnd"
+            minTickGap={24}
           />
           <YAxis
             tick={{ fontSize: 10, fill: '#94a3b8' }}
@@ -73,24 +88,24 @@ export default function BalanceChart({ transactions }: { transactions: Transacti
             formatter={(val) => <span style={{ fontSize: 11, color: '#64748b' }}>{val}</span>}
           />
 
-          {/* Resona as thin line */}
-          <Line
-            type="stepAfter"
-            dataKey="resona"
-            name="りそな"
-            stroke="#22c55e"
-            strokeWidth={1.5}
-            dot={false}
-            activeDot={{ r: 4 }}
-          />
-
           {/* MUFG as area */}
           <Area
             type="stepAfter"
             dataKey="mufg"
             name="三菱UFJ"
-            stroke="#3b82f6"
-            fill="#eff6ff"
+            stroke={MUFG_COLOR}
+            fill="#fef2f2"
+            strokeWidth={1.5}
+            dot={false}
+            activeDot={{ r: 4 }}
+          />
+
+          {/* Resona as thin line */}
+          <Line
+            type="stepAfter"
+            dataKey="resona"
+            name="りそな"
+            stroke={RESONA_COLOR}
             strokeWidth={1.5}
             dot={false}
             activeDot={{ r: 4 }}
@@ -101,9 +116,9 @@ export default function BalanceChart({ transactions }: { transactions: Transacti
             type="stepAfter"
             dataKey="total"
             name="合計"
-            stroke="#0f172a"
+            stroke={TOTAL_COLOR}
             strokeWidth={2.5}
-            dot={{ r: 3, fill: '#0f172a', strokeWidth: 0 }}
+            dot={false}
             activeDot={{ r: 5 }}
           />
         </ComposedChart>
@@ -112,17 +127,21 @@ export default function BalanceChart({ transactions }: { transactions: Transacti
       {/* Current balance summary */}
       <div className="mt-4 border-t border-slate-100">
         {[
-          { label: '三菱UFJ', value: data[data.length - 1].mufg!, color: '#3b82f6' },
-          { label: 'りそな',  value: data[data.length - 1].resona!, color: '#22c55e' },
+          { label: '三菱UFJ', value: latest.mufg, color: MUFG_COLOR },
+          { label: 'りそな',  value: latest.resona, color: RESONA_COLOR },
         ].map(item => (
           <div key={item.label} className="flex items-center justify-between px-0 py-3 border-b border-slate-50">
             <span className="text-sm font-bold text-slate-700">{item.label}</span>
-            <span className="text-sm font-bold" style={{ color: item.color }}>{fmtFull(item.value)}</span>
+            <span className="text-sm font-bold" style={{ color: item.color }}>
+              {item.value != null ? fmtFull(item.value) : '—'}
+            </span>
           </div>
         ))}
         <div className="flex items-center justify-between py-3 bg-slate-50 -mx-4 px-4 mt-0">
           <span className="text-sm font-bold text-slate-600">合計</span>
-          <span className="text-2xl font-black text-slate-900">{fmtFull(data[data.length - 1].total!)}</span>
+          <span className="text-2xl font-black" style={{ color: TOTAL_COLOR }}>
+            {latest.total != null ? fmtFull(latest.total) : '—'}
+          </span>
         </div>
       </div>
     </div>

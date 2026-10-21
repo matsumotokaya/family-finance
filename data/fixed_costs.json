@@ -1,0 +1,95 @@
+{
+  "asOf": "2026-10-21",
+  "source": "docs/subscriptions-handoff-2026-10-21.md",
+  "usdJpy": 160,
+  "items": [
+    {
+      "name": "KDDI利用料金",
+      "owner": "unknown",
+      "cycle": "monthly",
+      "amount": 5314,
+      "currency": "JPY",
+      "status": "reported",
+      "note": "本人申告額。固定か変動かは未確認"
+    },
+    {
+      "name": "コペルプラス白楽教室",
+      "owner": "unknown",
+      "cycle": "monthly",
+      "amount": 4600,
+      "currency": "JPY",
+      "status": "reported",
+      "note": "本人申告額"
+    },
+    {
+      "name": "iCloud+ 2TB（家族共有）",
+      "owner": "family",
+      "cycle": "monthly",
+      "amount": 1800,
+      "currency": "JPY",
+      "status": "provisional",
+      "note": "apple.comの1,800円明細が候補。iCloudへの帰属は未確定"
+    },
+    {
+      "name": "Suno AI",
+      "owner": "personal",
+      "cycle": "monthly",
+      "amount": 1600,
+      "currency": "JPY",
+      "status": "reported",
+      "note": "本人申告額。実請求とは未照合"
+    },
+    {
+      "name": "Midjourney",
+      "owner": "personal",
+      "cycle": "monthly",
+      "amount": 10,
+      "currency": "USD",
+      "status": "provisional",
+      "note": "10 USD/月の申告。円額は為替の仮定"
+    },
+    {
+      "name": "Netflix",
+      "owner": "family",
+      "cycle": "monthly",
+      "amount": 1600,
+      "currency": "JPY",
+      "status": "provisional",
+      "note": "プラン・実額不明。1,600円は仮予算"
+    },
+    {
+      "name": "Apple Developer Program",
+      "owner": "personal",
+      "cycle": "yearly",
+      "amount": 100,
+      "currency": "USD",
+      "status": "provisional",
+      "note": "約100 USD/年の記憶。請求額・更新日未確認"
+    },
+    {
+      "name": "Amazon Prime",
+      "owner": "family",
+      "cycle": "yearly",
+      "amount": 5000,
+      "currency": "JPY",
+      "status": "provisional",
+      "note": "約5,000円/年の記憶。請求額・更新日未確認"
+    },
+    {
+      "name": "onamai.com（ドメイン）",
+      "owner": "personal",
+      "cycle": "yearly",
+      "amount": null,
+      "currency": "JPY",
+      "status": "unknown",
+      "note": "約4件保有。更新料金・自動更新の有無未確認"
+    }
+  ],
+  "excluded": [
+    "従量課金（OpenAI API 月約10 USD、AWS）",
+    "都度購入・デポジット（Twilio、fal、Google AI Studio など）",
+    "光熱費など毎月変動する支払い",
+    "解約済み（OpenAI・Claude 個人契約）",
+    "Googleストレージ（契約・金額が未確定）"
+  ]
+}

@@ -56,8 +56,10 @@ function TransactionRows({ transactions }: { transactions: Transaction[] }) {
 }
 
 export default function HeroStats({ stats }: Props) {
-  const { totalIncome, totalExpense, netBalance } = stats;
+  const { totalExpense, netBalance } = stats;
   const actualDeficit = netBalance < 0;
+  // Mid-month figures still move (e.g. before payday), so no deficit/surplus colour
+  const balanceBg = stats.isIncomplete ? 'bg-slate-500' : actualDeficit ? 'bg-red-500' : 'bg-emerald-500';
   const [open, setOpen] = useState(false);
 
   return (
@@ -65,26 +67,22 @@ export default function HeroStats({ stats }: Props) {
       {/* Top row: expense + actual balance */}
       <div className="grid grid-cols-2 divide-x divide-slate-100">
         <div className="p-4 text-center">
-          <p className="text-xs text-slate-500 font-medium mb-1">今月の支出</p>
+          <p className="text-xs text-slate-500 font-medium mb-1">{stats.month}月の支出</p>
           <p className="text-3xl font-black text-slate-800">{formatCurrency(totalExpense)}</p>
         </div>
-        <div className={`p-4 text-center ${actualDeficit ? 'bg-red-500' : 'bg-emerald-500'}`}>
-          <p className="text-xs font-medium mb-1 text-white/80">今月の収支</p>
+        <div className={`p-4 text-center ${balanceBg}`}>
+          <p className="text-xs font-medium mb-1 text-white/80">{stats.month}月の収支</p>
           <p className="text-3xl font-black text-white">
             {actualDeficit ? '−' : '+'}{formatCurrency(Math.abs(netBalance))}
           </p>
         </div>
       </div>
 
-      {/* Bottom row: actual income + status */}
-      <div className="border-t border-slate-100 px-4 py-2.5 flex items-center justify-between bg-slate-50">
-        <div className="flex items-center gap-2">
-          <span className="text-xs text-slate-500">今月の収入</span>
-          <span className="text-sm font-bold text-emerald-600">{formatCurrency(totalIncome)}</span>
-        </div>
+      {/* Bottom row: status */}
+      <div className="border-t border-slate-100 px-4 py-2.5 flex items-center justify-end bg-slate-50">
         <div className="flex items-center gap-2">
           <span className="text-xs text-slate-500">データ状態</span>
-          <span className={`text-sm font-bold ${actualDeficit ? 'text-red-500' : 'text-emerald-600'}`}>
+          <span className={`text-sm font-bold ${stats.isIncomplete ? 'text-amber-600' : 'text-slate-700'}`}>
             {stats.isIncomplete ? '月途中' : '確定'}
           </span>
         </div>
