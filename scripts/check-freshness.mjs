@@ -80,9 +80,9 @@ async function main() {
     }
   }
 
-  const latestCard = {};
+  const cardMonths = {};
   for (const s of [...(cardJson.statements ?? cardJson), ...(cardDb ?? [])]) {
-    if (s.payment_yyyymm > (latestCard[s.card_label] ?? '')) latestCard[s.card_label] = s.payment_yyyymm;
+    (cardMonths[s.card_label] ??= new Set()).add(s.payment_yyyymm);
   }
 
   const today = todayJst();
@@ -90,14 +90,16 @@ async function main() {
   const prevMonth = addMonths(thisMonth, -1);
   const missing = [];
 
-  // Card statements are paid around the 4th-5th; this month's confirmed statement should exist.
+  // Card statements are paid around the 4th-5th; every month from the first
+  // imported one up to this month's payment should exist.
   for (const card of CARDS) {
-    const latest = latestCard[card];
-    if (!latest || latest < thisMonth) {
-      const from = latest ? addMonths(latest, 1) : thisMonth;
-      const range = from === thisMonth ? label(thisMonth) : `${label(from)}〜${label(thisMonth)}`;
-      missing.push(`カード確定明細 ${card}: ${range}支払分（取込済みは${latest ? `${label(latest)}支払分まで` : 'なし'}）`);
+    const have = cardMonths[card] ?? new Set();
+    const first = [...have].sort()[0] ?? thisMonth;
+    const gaps = [];
+    for (let ym = first; ym <= thisMonth; ym = addMonths(ym, 1)) {
+      if (!have.has(ym)) gaps.push(label(ym));
     }
+    if (gaps.length > 0) missing.push(`カード確定明細 ${card}: ${gaps.join('、')}支払分`);
   }
 
   // Bank data counts as complete for last month once something from this month is in.

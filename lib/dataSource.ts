@@ -7,7 +7,6 @@ import transactionsData from '@/data/transactions.json';
 import cardData from '@/data/card_transactions.json';
 import { Transaction } from '@/types';
 import { CardStatement, CardTransaction } from '@/lib/cardUtils';
-import { getSupabaseServer } from '@/lib/supabaseServer';
 
 interface BankRow {
   id: string;
@@ -90,14 +89,23 @@ interface StatementRow {
 
 export async function getCardStatements(): Promise<CardStatement[]> {
   const jsonStatements = cardData.statements as CardStatement[];
-  const supabase = getSupabaseServer();
-  if (!supabase) return jsonStatements;
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!url || !key) return jsonStatements;
 
   try {
-    const { data, error } = await supabase
-      .from('ff_card_statements')
-      .select('id, file, card, card_label, payment_date, payment_yyyymm, total, ff_card_transactions(*)');
-    if (error || !data) return jsonStatements;
+    // Uncached PostgREST like getBankTransactions: through supabase-js the
+    // response stayed in Next's data cache, so uploads only showed after a deploy.
+    const response = await fetch(
+      `${url}/rest/v1/ff_card_statements?select=id,file,card,card_label,payment_date,payment_yyyymm,total,ff_card_transactions(*)`,
+      {
+        headers: { apikey: key, Authorization: `Bearer ${key}` },
+        cache: 'no-store',
+      },
+    );
+    if (!response.ok) return jsonStatements;
+    const data: unknown = await response.json();
+    if (!Array.isArray(data)) return jsonStatements;
 
     const knownFiles = new Set(jsonStatements.map(s => s.file));
     const extra: CardStatement[] = (data as unknown as StatementRow[])
