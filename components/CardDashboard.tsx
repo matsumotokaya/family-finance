@@ -17,13 +17,48 @@ import MonthSelector from './MonthSelector';
 function fmt(n: number) { return `¥${n.toLocaleString('ja-JP')}`; }
 function fmtK(n: number) { return n >= 10000 ? `${Math.round(n / 1000)}k` : `${n}`; }
 
+type CardTab = 'viewMiku' | 'viewNatsuya' | 'lumine';
+
+// The three groups shown everywhere on this page, in display order
+const GROUPS: { key: CardTab; label: string; color: string }[] = [
+  { key: 'viewMiku', label: '未来 VIEW', color: '#ef4444' },
+  { key: 'viewNatsuya', label: '夏弥 VIEW', color: '#f97316' },
+  { key: 'lumine', label: '夏弥 ルミネ', color: '#8b5cf6' },
+];
+
+function inGroup(tab: CardTab, card: string, person: string): boolean {
+  if (tab === 'lumine') return card !== 'view';
+  if (card !== 'view') return false;
+  return tab === 'viewMiku' ? person.includes('未来') : !person.includes('未来');
+}
+
+const TrendTooltip = ({ active, payload, label }: any) => {
+  if (!active || !payload?.length) return null;
+  const row: MonthlySummary = payload[0].payload;
+  return (
+    <div className="bg-white border border-slate-200 rounded-xl shadow-lg p-3 text-xs min-w-40">
+      <p className="font-bold text-slate-700 mb-1.5">{label}</p>
+      <div className="flex justify-between gap-4 mb-1 pb-1 border-b border-slate-100">
+        <span className="font-bold text-slate-700">合計</span>
+        <span className="font-black">{fmt(row.total)}</span>
+      </div>
+      {GROUPS.map(g => (
+        <div key={g.key} className="flex justify-between gap-4 mb-0.5">
+          <span style={{ color: g.color }}>{g.label}</span>
+          <span className="font-bold">{fmt(row[g.key])}</span>
+        </div>
+      ))}
+    </div>
+  );
+};
+
 interface Props { statements: CardStatement[]; }
 
 export default function CardDashboard({ statements }: Props) {
   const summaries = useMemo(() => buildMonthlySummaries(statements), [statements]);
   const months = summaries.map(s => s.yyyymm);
   const [selectedMonth, setSelectedMonth] = useState(months[months.length - 1]);
-  const [activeTab, setActiveTab] = useState<'miku' | 'natsuya'>('miku');
+  const [activeTab, setActiveTab] = useState<CardTab>('viewMiku');
 
   const selected = summaries.find(s => s.yyyymm === selectedMonth)!;
 
@@ -34,10 +69,7 @@ export default function CardDashboard({ statements }: Props) {
       .flatMap(s => s.transactions.map(t => ({ ...t, card: s.card, card_label: s.card_label })));
   }, [statements, selectedMonth]);
 
-  const mikuTxns = selectedTxns.filter(t => t.person.includes('未来') && t.net > 0);
-  const natsuyaTxns = selectedTxns.filter(t => t.person.includes('夏弥') && t.net > 0);
-
-  const activeTxns = activeTab === 'miku' ? mikuTxns : natsuyaTxns;
+  const activeTxns = selectedTxns.filter(t => t.net > 0 && inGroup(activeTab, t.card, t.person));
   const breakdown = useMemo(() => getCategoryBreakdown(activeTxns), [activeTxns]);
   const maxBreakdown = breakdown[0]?.amount || 1;
 
@@ -49,7 +81,7 @@ export default function CardDashboard({ statements }: Props) {
         <div className="flex items-center justify-between pb-3">
           <div className="w-9" />
           <div className="text-center">
-            <h1 className="text-sm font-medium opacity-70">カード明細分析</h1>
+            <h1 className="text-sm font-medium opacity-70">カード明細</h1>
             <p className="text-xs text-white/50">VIEWカード（未来）・ルミネカード（夏弥）</p>
           </div>
           <HamburgerMenu />
@@ -66,59 +98,73 @@ export default function CardDashboard({ statements }: Props) {
 
         {/* Monthly summary trend */}
         <div className="bg-white rounded-2xl p-4 shadow-sm">
-          <h2 className="text-sm font-bold text-slate-700 mb-3">月次推移</h2>
+          <h2 className="text-sm font-bold text-slate-700">月次推移</h2>
+          <p className="text-xs text-slate-400 mb-3">
+            {summaries[0].label}〜{summaries[summaries.length - 1].label}（支払月・取り込み済みの全期間）
+          </p>
           <ResponsiveContainer width="100%" height={180}>
-            <BarChart data={summaries} margin={{ top: 4, right: 4, left: 0, bottom: 0 }}>
+            <BarChart
+              data={summaries}
+              margin={{ top: 4, right: 4, left: 0, bottom: 0 }}
+              onClick={(e: any) => e?.activePayload?.[0] && setSelectedMonth(e.activePayload[0].payload.yyyymm)}
+            >
               <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
               <XAxis dataKey="label" tick={{ fontSize: 10, fill: '#64748b' }}
-                tickFormatter={v => v.replace('年', '/').replace('月', '')} />
+                tickFormatter={v => v.replace('年', '/').replace('月', '')} minTickGap={8} />
               <YAxis tick={{ fontSize: 10, fill: '#94a3b8' }} tickFormatter={fmtK} width={36} />
-              <Tooltip formatter={(v: number) => fmt(v)} contentStyle={{ fontSize: 12, borderRadius: 8 }} />
-              <Bar dataKey="viewMiku" name="未来VIEW" stackId="a" fill="#ef4444" radius={[0, 0, 0, 0]} maxBarSize={28} />
-              <Bar dataKey="viewNatsuya" name="夏弥VIEW" stackId="a" fill="#f97316" maxBarSize={28} />
-              <Bar dataKey="lumine" name="ルミネ" stackId="a" fill="#8b5cf6" radius={[4, 4, 0, 0]} maxBarSize={28} />
+              <Tooltip content={<TrendTooltip />} cursor={{ fill: '#f1f5f9' }} />
+              {GROUPS.map((g, i) => (
+                <Bar key={g.key} dataKey={g.key} name={g.label} stackId="a" fill={g.color} maxBarSize={28}
+                  radius={i === GROUPS.length - 1 ? [4, 4, 0, 0] : [0, 0, 0, 0]}>
+                  {summaries.map(s => (
+                    <Cell key={s.yyyymm} fillOpacity={s.yyyymm === selectedMonth ? 1 : 0.45} />
+                  ))}
+                </Bar>
+              ))}
             </BarChart>
           </ResponsiveContainer>
           <div className="flex justify-center gap-3 mt-1">
-            {[['未来VIEW', '#ef4444'], ['夏弥VIEW', '#f97316'], ['ルミネ', '#8b5cf6']].map(([l, c]) => (
-              <span key={l} className="flex items-center gap-1 text-xs text-slate-500">
-                <span className="w-3 h-3 rounded-sm" style={{ backgroundColor: c }} />{l}
+            {GROUPS.map(g => (
+              <span key={g.key} className="flex items-center gap-1 text-xs text-slate-500">
+                <span className="w-3 h-3 rounded-sm" style={{ backgroundColor: g.color }} />{g.label}
               </span>
             ))}
           </div>
         </div>
 
-        {/* Month card totals */}
-        <div className="grid grid-cols-3 gap-2">
-          {[
-            { label: '未来 VIEW', amount: selected.viewMiku },
-            { label: '夏弥 VIEW', amount: selected.viewNatsuya },
-            { label: '夏弥 ルミネ', amount: selected.lumine },
-          ].map(item => (
-            <div key={item.label} className="rounded-2xl p-3 text-center shadow-sm bg-white">
-              <p className="text-xs text-slate-500 mb-1">{item.label}</p>
-              <p className="text-base font-black text-slate-800">
-                {fmt(item.amount)}
-              </p>
-            </div>
-          ))}
+        {/* Month total and its three parts */}
+        <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
+          <div className="px-4 py-3 flex items-baseline justify-between">
+            <p className="text-xs font-bold text-slate-500">{selected.label}支払分の合計</p>
+            <p className="text-3xl font-black text-slate-900">{fmt(selected.total)}</p>
+          </div>
+          <div className="grid grid-cols-3 border-t border-slate-100 divide-x divide-slate-100">
+            {GROUPS.map(g => (
+              <div key={g.key} className="p-3 text-center">
+                <p className="text-xs text-slate-500 mb-1 flex items-center justify-center gap-1">
+                  <span className="w-2 h-2 rounded-full" style={{ backgroundColor: g.color }} />{g.label}
+                </p>
+                <p className="text-base font-black text-slate-800">{fmt(selected[g.key])}</p>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Transaction breakdown — tabbed by person */}
         <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
           <div className="flex border-b border-slate-100">
-            {[{ key: 'miku', label: `未来 VIEW  ${fmt(selected.viewMiku)}` },
-              { key: 'natsuya', label: `夏弥 ルミネ  ${fmt(selected.lumine)}` }].map(tab => (
+            {GROUPS.map(g => (
               <button
-                key={tab.key}
-                onClick={() => setActiveTab(tab.key as 'miku' | 'natsuya')}
+                key={g.key}
+                onClick={() => setActiveTab(g.key)}
                 className={`flex-1 py-2.5 text-xs font-bold transition-colors ${
-                  activeTab === tab.key
+                  activeTab === g.key
                     ? 'bg-slate-900 text-white'
                     : 'text-slate-500 hover:bg-slate-50'
                 }`}
               >
-                {tab.label}
+                {g.label}
+                <span className="block font-medium opacity-80">{fmt(selected[g.key])}</span>
               </button>
             ))}
           </div>

@@ -196,7 +196,7 @@ npx vercel --prod
 family-finance/
 ├── app/
 │   ├── page.tsx            # メインダッシュボード（/）
-│   ├── cards/page.tsx      # カード明細分析（/cards）
+│   ├── cards/page.tsx      # カード明細（/cards）
 │   └── info/page.tsx       # 情報ページ（/info）
 ├── components/
 │   ├── Dashboard.tsx       # 全体レイアウト・月ナビゲーション
