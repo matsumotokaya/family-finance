@@ -2850,6 +2850,26 @@
       "balance_after": 2209942
     },
     {
+      "id": "resona-2026-07-31-1",
+      "date": "2026-07-31",
+      "account": "resona",
+      "type": "expense",
+      "amount": 8089,
+      "description": "ローン",
+      "category": "housing_loan",
+      "note": "住宅ローン"
+    },
+    {
+      "id": "resona-2026-07-31-2",
+      "date": "2026-07-31",
+      "account": "resona",
+      "type": "expense",
+      "amount": 107321,
+      "description": "ローン",
+      "category": "housing_loan",
+      "note": "住宅ローン"
+    },
+    {
       "id": "mufg-2026-08-04-1",
       "date": "2026-08-04",
       "account": "mufg",
@@ -2883,6 +2903,16 @@
       "balance_after": 1588852
     },
     {
+      "id": "resona-2026-08-05-1",
+      "date": "2026-08-05",
+      "account": "resona",
+      "type": "transfer",
+      "amount": 310000,
+      "description": "振込 マツモト カヤ",
+      "category": "internal_transfer",
+      "note": "口座間移動（収支計算から除外）"
+    },
+    {
       "id": "mufg-2026-08-07-1",
       "date": "2026-08-07",
       "account": "mufg",
@@ -2914,6 +2944,16 @@
       "category": "child_allowance",
       "note": "横浜市 児童手当",
       "balance_after": 1586268
+    },
+    {
+      "id": "resona-2026-08-15-1",
+      "date": "2026-08-15",
+      "account": "resona",
+      "type": "income",
+      "amount": 303,
+      "description": "利息",
+      "category": "interest",
+      "note": ""
     },
     {
       "id": "mufg-2026-08-17-1",
@@ -2969,6 +3009,26 @@
       "category": "other_expense",
       "note": "PayPayチャージ",
       "balance_after": 2076311
+    },
+    {
+      "id": "resona-2026-08-31-1",
+      "date": "2026-08-31",
+      "account": "resona",
+      "type": "expense",
+      "amount": 8089,
+      "description": "ローン",
+      "category": "housing_loan",
+      "note": "住宅ローン"
+    },
+    {
+      "id": "resona-2026-08-31-2",
+      "date": "2026-08-31",
+      "account": "resona",
+      "type": "expense",
+      "amount": 107321,
+      "description": "ローン",
+      "category": "housing_loan",
+      "note": "住宅ローン"
     },
     {
       "id": "mufg-2026-09-01-1",
@@ -3068,6 +3128,26 @@
       "category": "cash_withdrawal",
       "note": "三井住友銀行ATM出金",
       "balance_after": 2123219
+    },
+    {
+      "id": "resona-2026-09-30-1",
+      "date": "2026-09-30",
+      "account": "resona",
+      "type": "expense",
+      "amount": 8089,
+      "description": "ローン",
+      "category": "housing_loan",
+      "note": "住宅ローン"
+    },
+    {
+      "id": "resona-2026-09-30-2",
+      "date": "2026-09-30",
+      "account": "resona",
+      "type": "expense",
+      "amount": 107321,
+      "description": "ローン",
+      "category": "housing_loan",
+      "note": "住宅ローン"
     },
     {
       "id": "mufg-2026-10-05-1",
