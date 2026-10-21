@@ -1,7 +1,7 @@
 'use client';
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid,
-  Tooltip, Legend, ResponsiveContainer, ReferenceLine, Label,
+  Tooltip, Legend, ResponsiveContainer,
 } from 'recharts';
 import { useMemo } from 'react';
 import { CardStatement, buildMonthlySummaries } from '@/lib/cardUtils';
@@ -74,9 +74,6 @@ export default function CardTrendChart({ statements }: { statements: CardStateme
             iconSize={8}
             formatter={(val) => <span style={{ fontSize: 11, color: '#64748b' }}>{val}</span>}
           />
-          <ReferenceLine y={40000} stroke="#ef4444" strokeDasharray="4 3" strokeWidth={1.5}>
-            <Label value="上限 ¥4万" position="insideTopRight" fontSize={10} fill="#ef4444" />
-          </ReferenceLine>
           <Line
             type="monotone"
             dataKey="view"
